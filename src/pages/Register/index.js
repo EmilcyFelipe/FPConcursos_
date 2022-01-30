@@ -51,6 +51,7 @@ export default function Register() {
       setSigla('');
       setCargo('');
       setBanca('');
+      navigation.navigate('Concursos')
   }
 
   return (

@@ -5,6 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
+import Concursos from "../pages/Concursos";
 
 export default function AppRoutes() {
   const Drawer = createDrawerNavigator();
@@ -24,9 +25,44 @@ export default function AppRoutes() {
         drawerInactiveTintColor: "#fff",
       }}
     >
-      <Drawer.Screen name="Home" component={Home} />
-      <Drawer.Screen name="Profile" component={Profile} />
-      <Drawer.Screen name="Register" component={Register} />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerStyle: {
+            backgroundColor: "#121212",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
+
+      <Drawer.Screen
+        name="Register"
+        component={Register}
+        options={{
+          headerStyle: {
+            backgroundColor: "#121212",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
+
+      <Drawer.Screen
+        name="Concursos"
+        component={Concursos}
+        options={{
+          headerStyle: {
+            backgroundColor: "#121212",
+          },
+          headerTintColor: "#fff",
+        }}
+      />
     </Drawer.Navigator>
   );
 }

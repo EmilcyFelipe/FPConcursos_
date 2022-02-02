@@ -28,6 +28,7 @@ export default function TimelineComponent({ data }) {
       <TimeLineWrapper
         horizontal={true}
         data={timeList}
+        showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <StepBox>
             <MaterialIcons name="label-important" size={130} color="#FFFF" />

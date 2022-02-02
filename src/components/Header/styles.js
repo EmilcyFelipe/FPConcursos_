@@ -18,11 +18,11 @@ export const Button = styled.TouchableOpacity`
 
 export const Title = styled.Text`
   color: #fff;
-  font-size: 20px;
+  font-size: 30px;
   margin: auto;
 `;
 
 export const Subtitle = styled.Text`
   color: #ff5c0a;
-  margin-bottom: 0px;
+  font-size: 18px;
 `;

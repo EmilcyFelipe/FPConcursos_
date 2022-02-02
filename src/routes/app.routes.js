@@ -6,6 +6,8 @@ import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import Concursos from "../pages/Concursos";
+import Timeline from '../pages/Timeline'
+import HomeRoutes from "./home.routes";
 
 export default function AppRoutes() {
   const Drawer = createDrawerNavigator();
@@ -26,8 +28,8 @@ export default function AppRoutes() {
       }}
     >
       <Drawer.Screen
-        name="Home"
-        component={Home}
+        name="HomeRoutes"
+        component={HomeRoutes}
         options={{ headerShown: false }}
       />
 

@@ -63,6 +63,8 @@ export default function Timeline({ data }) {
     setModalVisible(true);
   }
 
+  function addStep() {}
+
   function cancelAddStep() {
     setStepName("");
     setInitialDate("");
@@ -72,48 +74,52 @@ export default function Timeline({ data }) {
 
   return (
     <Container>
-      <Header />
+      <Header goBack={true} />
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <TouchableWithoutFeedback
           onPress={() => {
             Keyboard.dismiss();
           }}
-          style={{ flex: 1, height: "400", backgroundColor: "red" }}
         >
-          <ModalContent>
-            <ModalHeadText>Adicionar</ModalHeadText>
-            <ModalInput
-              value={stepName}
-              onChangeText={(text) => setStepName(text)}
-              placeholder="Nome da fase"
-            />
-            <ModalInput
-              value={initialDate}
-              onChangeText={(text) => setInitialDate(text)}
-              placeholder='Data Inicial. Ex: "dd/MM/YYYY"'
-            />
-            <ModalInput
-              value={finalDate}
-              onChangeText={(text) => setFinalDate(text)}
-              placeholder='Data Final. Ex: "dd/MM/YYYY"'
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "90%",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-              <ModalButton>
-                <Text style={{ color: "#FFF" }}>Adicionar</Text>
-              </ModalButton>
-              <ModalButton style={{ backgroundColor: "#AC3F3F" }} onPress={cancelAddStep}>
-                <Text style={{ color: "#FFF" }}>Cancelar</Text>
-              </ModalButton>
-            </View>
-          </ModalContent>
+          <View style={{ flex: 1 }}>
+            <ModalContent>
+              <ModalHeadText>Adicionar</ModalHeadText>
+              <ModalInput
+                value={stepName}
+                onChangeText={(text) => setStepName(text)}
+                placeholder="Nome da fase"
+              />
+              <ModalInput
+                value={initialDate}
+                onChangeText={(text) => setInitialDate(text)}
+                placeholder='Data Inicial. Ex: "dd/MM/YYYY"'
+              />
+              <ModalInput
+                value={finalDate}
+                onChangeText={(text) => setFinalDate(text)}
+                placeholder='Data Final. Ex: "dd/MM/YYYY"'
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  width: "90%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              >
+                <ModalButton>
+                  <Text style={{ color: "#FFF" }}>Adicionar</Text>
+                </ModalButton>
+                <ModalButton
+                  style={{ backgroundColor: "#AC3F3F" }}
+                  onPress={cancelAddStep}
+                >
+                  <Text style={{ color: "#FFF" }}>Cancelar</Text>
+                </ModalButton>
+              </View>
+            </ModalContent>
+          </View>
         </TouchableWithoutFeedback>
       </Modal>
       <TitleWrapper>

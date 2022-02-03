@@ -17,9 +17,6 @@ export default function Home({ data }) {
   
   const navigation = useNavigation();
 
-  function handleTimeLime(){
-    navigation.navigate('Timeline')
-  }
 
 
   return (
@@ -29,8 +26,8 @@ export default function Home({ data }) {
       <TimelineComponent />
       <ActionsWrapper>
         <ActionRow>
-          <ActionItem onPress={()=>{handleTimeLime()}}><ActionText>Cronograma</ActionText></ActionItem>
-          <ActionItem><ActionText>Conteúdo</ActionText></ActionItem>
+          <ActionItem onPress={()=>{navigation.navigate('Timeline')}}><ActionText>Cronograma</ActionText></ActionItem>
+          <ActionItem onPress={()=>{navigation.navigate('Subjects')}}><ActionText>Conteúdo</ActionText></ActionItem>
         </ActionRow>
         <ActionRow>
           <ActionItem><ActionText>Desempenho</ActionText></ActionItem>

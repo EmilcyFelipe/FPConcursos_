@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '../pages/Home';
 import Timeline  from '../pages/Timeline';
+import Subjects from '../pages/Subjects';
 
 export default function HomeRoutes(){
     const HomeStack = createStackNavigator();
@@ -13,7 +14,14 @@ export default function HomeRoutes(){
             component={Home}
             options={{headerShown: false}}
             />
-            <HomeStack.Screen name='Timeline' options={{headerShown: false}} component={Timeline}/>
+            <HomeStack.Screen 
+            name='Timeline' 
+            options={{headerShown: false}} 
+            component={Timeline}/>
+             <HomeStack.Screen 
+            name='Subjects' 
+            options={{headerShown: false}} 
+            component={Subjects}/>
         </HomeStack.Navigator>
     )
 }

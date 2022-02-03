@@ -52,11 +52,11 @@ export const ModalHeadText = styled.Text`
 `;
 
 export const ModalInput = styled.TextInput.attrs({
-  placeholderTextColor: "rgba(0, 0, 0, 0.6)",
+  placeholderTextColor: "#fff8",
 })`
   width: 90%;
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #121212;
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;

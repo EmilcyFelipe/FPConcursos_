@@ -2,12 +2,15 @@ import styled from "styled-components";
 
 export const Container = styled.View`
   width: 90%;
+  margin-bottom: 10px;
 `;
 
 export const MainMenu = styled.TouchableOpacity`
   width: 100%;
   padding: 20px;
   background-color: #121212;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const Submenu = styled.View`

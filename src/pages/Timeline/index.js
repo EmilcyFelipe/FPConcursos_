@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import {
   View,
@@ -9,6 +9,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+
+import app from "../../services/firebaseConnection";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import { AuthContext } from "../../contexts/auth";
 
 import Header from "../../components/Header";
 
@@ -25,32 +29,49 @@ import {
   ModalButton,
 } from "./styles";
 
-export default function Timeline({ data }) {
+export default function Timeline({ route }) {
   const [stepName, setStepName] = useState("");
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
-  const [items, setItems] = useState([
-    {
-      etapa: "Edital",
-      initialDate: "22/02/2022",
-      finalDate: "23/05/2022",
-    },
-    {
-      etapa: "Inscrição",
-      initialDate: "22/02/2022",
-      finalDate: "23/05/2022",
-    },
-    {
-      etapa: "Provas",
-      initialDate: "22/02/2022",
-      finalDate: "23/05/2022",
-    },
-  ]);
+  const [editing, setEditing] = useState(false);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const { user } = useContext(AuthContext);
+  const db = getDatabase(app);
+
+  const [items, setItems] = useState([]);
+  const data = route.params.data;
+  const timelineRef = ref(
+    db,
+    "concursos/" + user.uid + "/" + data + "/cronograma"
+  );
+
+  useEffect(() => {
+    async function loadList() {
+      onValue(timelineRef, (snapshot) => {
+        setItems([]);
+        snapshot.forEach((childItem) => {
+          let timeItem = {
+            key: childItem.key,
+            etapa: childItem.val().etapa,
+            initialDate: childItem.val().initialDate,
+            finalDate: childItem.val().finalDate,
+          };
+          setItems((oldArray) => [...oldArray, timeItem]);
+        });
+      });
+    }
+    loadList();
+  }, []);
 
   let timelineItems = items.map((item) => (
-    <Step>
+    <Step
+      key={item.key}
+      onLongPress={() => {
+        setEditing(true);
+        handleAddStep(item.key);
+      }}
+    >
       <StepText>{item.etapa}</StepText>
       <StepDate>
         <StepDateText>{item.initialDate}</StepDateText>
@@ -59,16 +80,45 @@ export default function Timeline({ data }) {
     </Step>
   ));
 
-  function handleAddStep() {
+  function handleAddStep(key) {
+    if (key) {
+      const stepRef = ref(
+        db,
+        "concursos/" + user.uid + "/" + data + "/cronograma/" + key
+      );
+      onValue(stepRef, (snapshot) => {
+        setStepName(snapshot.val().etapa);
+        setInitialDate(snapshot.val().initialDate);
+        setFinalDate(snapshot.val().finalDate);
+      });
+    }
     setModalVisible(true);
   }
 
-  function addStep() {}
+  function addStep() {
+    const stepKey = push(timelineRef);
+
+    set(stepKey, {
+      etapa: stepName,
+      initialDate: initialDate,
+      finalDate: finalDate,
+    })
+      .then(() => {
+        setStepName("");
+        setInitialDate("");
+        setFinalDate("");
+        setModalVisible(false);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
 
   function cancelAddStep() {
     setStepName("");
     setInitialDate("");
     setFinalDate("");
+    setEditing(false);
     setModalVisible(false);
   }
 
@@ -108,8 +158,10 @@ export default function Timeline({ data }) {
                   marginRight: "auto",
                 }}
               >
-                <ModalButton>
-                  <Text style={{ color: "#FFF" }}>Adicionar</Text>
+                <ModalButton onPress={addStep}>
+                  <Text style={{ color: "#FFF" }}>
+                    {editing ? "Editar" : "Adicionar"}
+                  </Text>
                 </ModalButton>
                 <ModalButton
                   style={{ backgroundColor: "#AC3F3F" }}

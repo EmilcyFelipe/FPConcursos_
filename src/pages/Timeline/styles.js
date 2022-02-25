@@ -14,7 +14,7 @@ export const TitleWrapper = styled.View`
   margin-bottom: 10px;
 `;
 
-export const Step = styled.View`
+export const Step = styled.TouchableOpacity`
   background-color: #121212;
   width: 90%;
   height: 70px;

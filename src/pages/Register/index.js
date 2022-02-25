@@ -14,10 +14,8 @@ import {
 
 import { AuthContext } from "../../contexts/auth";
 
-import { app } from '../../services/firebaseConnection'
+import { app } from "../../services/firebaseConnection";
 import { set, ref, getDatabase, push } from "firebase/database";
-
-
 
 export default function Register() {
   const [orgao, setOrgao] = useState();
@@ -25,33 +23,34 @@ export default function Register() {
   const [cargo, setCargo] = useState();
   const [banca, setBanca] = useState();
 
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
-  const db = getDatabase(app)
+  const db = getDatabase(app);
 
-  function addConcurso(){
-      let uid = user.uid;
-      const concursosRef = ref(db,'concursos/'+uid);
-      let key = push(concursosRef);
-      set(key,{
-          orgao: orgao,
-          sigla: sigla,
-          cargo: cargo,
-          banca: banca
-      })
-      .then(()=>{
-          
-      })
-      .catch((error)=>{
-        alert(error.message)
-      })
-      setOrgao('');
-      setSigla('');
-      setCargo('');
-      setBanca('');
-      navigation.navigate('Concursos')
+  function addConcurso() {
+    let uid = user.uid;
+    const concursosRef = ref(db, "concursos/" + uid);
+    let key = push(concursosRef);
+    set(key, {
+      orgao: orgao,
+      sigla: sigla,
+      cargo: cargo,
+      banca: banca,
+      timeline: [{}],
+      Subjects: [{}],
+      performance: [{}],
+    })
+      .then(() => {})
+      .catch((error) => {
+        alert(error.message);
+      });
+    setOrgao("");
+    setSigla("");
+    setCargo("");
+    setBanca("");
+    navigation.navigate("Concursos");
   }
 
   return (
@@ -83,7 +82,7 @@ export default function Register() {
             onChangeText={(text) => setBanca(text)}
           />
         </InputArea>
-        <Submit onPress={()=>addConcurso()}>
+        <Submit onPress={() => addConcurso()}>
           <SubmitText>Adicionar</SubmitText>
         </Submit>
       </Container>

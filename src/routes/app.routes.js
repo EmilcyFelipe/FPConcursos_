@@ -30,7 +30,7 @@ export default function AppRoutes() {
       <Drawer.Screen
         name="HomeRoutes"
         component={HomeRoutes}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: "Início" }}
       />
 
       <Drawer.Screen
@@ -41,13 +41,12 @@ export default function AppRoutes() {
             backgroundColor: "#121212",
           },
           headerTintColor: "#fff",
+          title: "Perfil",
         }}
       />
 
       <Drawer.Screen
         name="Register"
-        drawerLabel="Registrar"
-        headerTitle="Registrar"
         component={Register}
         options={{
           headerStyle: {
@@ -66,6 +65,7 @@ export default function AppRoutes() {
             backgroundColor: "#121212",
           },
           headerTintColor: "#fff",
+          title: "Concursos",
         }}
       />
     </Drawer.Navigator>

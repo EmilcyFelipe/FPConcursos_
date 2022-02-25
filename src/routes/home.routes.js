@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../pages/Home';
 import Timeline  from '../pages/Timeline';
 import Subjects from '../pages/Subjects';
+import PerformanceBasis from '../pages/PerformanceBasis';
+import Performance from '../pages/Performance';
 
 export default function HomeRoutes(){
     const HomeStack = createStackNavigator();
@@ -18,10 +20,18 @@ export default function HomeRoutes(){
             name='Timeline' 
             options={{headerShown: false}} 
             component={Timeline}/>
-             <HomeStack.Screen 
+            <HomeStack.Screen 
             name='Subjects' 
             options={{headerShown: false}} 
             component={Subjects}/>
+             <HomeStack.Screen 
+            name='PerformanceBasis' 
+            options={{headerShown: false}} 
+            component={PerformanceBasis}/>
+            <HomeStack.Screen
+            name='Performance'
+            options={{headerShown: false}}
+            component={Performance}/>
         </HomeStack.Navigator>
     )
 }

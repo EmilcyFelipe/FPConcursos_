@@ -10,7 +10,7 @@ import {
 
 import { set, ref, push, getDatabase, onValue } from "firebase/database";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AuthContext = createContext({});
 
@@ -20,16 +20,16 @@ function AuthProvider({ children }) {
   const auth = getAuth(app);
   const db = getDatabase();
 
-  useEffect(async ()=>{
+  useEffect(async () => {
     try {
-        const value = await AsyncStorage.getItem('Auth_user')
-        if(value !== null) {
-          setUser(JSON.parse(value))
-        }
-      } catch(e) {
-        alert('Error ao carregar usuário')
+      const value = await AsyncStorage.getItem("Auth_user");
+      if (value !== null) {
+        setUser(JSON.parse(value));
       }
-  },[])
+    } catch (e) {
+      alert("Error ao carregar usuário");
+    }
+  }, []);
 
   function signIn(email, password) {
     signInWithEmailAndPassword(auth, email, password)
@@ -49,7 +49,7 @@ function AuthProvider({ children }) {
             storageUser(data);
           },
           { onlyOnce: true }
-        )
+        );
       })
       .catch((error) => {
         alert(error.message);
@@ -97,13 +97,12 @@ function AuthProvider({ children }) {
       });
   }
 
-  async function storageUser(data){
-    try{
-        await AsyncStorage.setItem('Auth_user', JSON.stringify(data))
-        console.log('gravado com sucesso')
-    }
-    catch(error){
-        alert(error.message)
+  async function storageUser(data) {
+    try {
+      await AsyncStorage.setItem("Auth_user", JSON.stringify(data));
+      console.log("gravado com sucesso");
+    } catch (error) {
+      alert(error.message);
     }
   }
 

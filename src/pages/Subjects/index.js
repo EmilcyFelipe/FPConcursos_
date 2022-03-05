@@ -1,12 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { View, Text, TouchableOpacity, Modal, Keyboard } from "react-native";
 
 import { Container, TitleWrapper } from "./styles";
+
 import Header from "../../components/Header";
 import MenuSubmenu from "../../components/MenuSubmenu";
 import ModalSubject from "../../components/ModalSubject";
 
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import app from "../../services/firebaseConnection";
+
+import { AuthContext } from "../../contexts/auth";
+import { HomeContext } from "../../contexts/home";
+
 export default function Subjects() {
+  const { user } = useContext(AuthContext);
+  const { concursoSelected } = useContext(HomeContext);
+
+  const db = getDatabase(app);
+  const subjectRef = ref(db, "concursos/" + user.uid + "/" + concursoSelected);
+
   const [subObject, setSubsObject] = useState([
     {
       name: "Portugues",
@@ -33,28 +46,30 @@ export default function Subjects() {
       ],
     },
   ]);
+  useEffect(() => {
+    console.log(concursoSelected);
+  }, [concursoSelected]);
 
   const [modalVisible, setModalVisible] = useState(false);
 
   function handleAdd() {
     setModalVisible(true);
-  
   }
   function addSubject(value) {
-    setSubsObject([...subObject, {name: value, matters:[]}]);
+    const subjectKey = push(subjectRef);
+    set(subjectKey, {
+      name: value,
+    });
+    setSubsObject([...subObject, { name: value, matters: [] }]);
     setModalVisible(false);
     Keyboard.dismiss();
   }
 
-  let menusList = subObject.map((item) => <MenuSubmenu data={item} />);
+  let subjectMenu = subObject.map((item) => <MenuSubmenu data={item} />);
   return (
     <Container>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-      >
-          <ModalSubject shows={setModalVisible} addSubject={addSubject}/>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <ModalSubject shows={setModalVisible} addSubject={addSubject} />
       </Modal>
       <Header goBack={true} />
       <TitleWrapper>
@@ -65,7 +80,7 @@ export default function Subjects() {
           <Text style={{ color: "#fff", fontSize: 18 }}>Adicionar</Text>
         </TouchableOpacity>
       </TitleWrapper>
-      {menusList}
+      {subjectMenu}
     </Container>
   );
 }

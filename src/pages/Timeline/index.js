@@ -11,10 +11,19 @@ import {
 } from "react-native";
 
 import app from "../../services/firebaseConnection";
-import { getDatabase, ref, set, push, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  set,
+  push,
+  onValue,
+  update,
+  remove,
+} from "firebase/database";
 import { AuthContext } from "../../contexts/auth";
 
 import Header from "../../components/Header";
+import { FontAwesome } from "@expo/vector-icons";
 
 import {
   Container,
@@ -34,6 +43,7 @@ export default function Timeline({ route }) {
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
   const [editing, setEditing] = useState(false);
+  const [selectedStep, setSelectedStep] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useContext(AuthContext);
@@ -69,7 +79,8 @@ export default function Timeline({ route }) {
       key={item.key}
       onLongPress={() => {
         setEditing(true);
-        handleAddStep(item.key);
+        setSelectedStep(item.key);
+        handleAddStep();
       }}
     >
       <StepText>{item.etapa}</StepText>
@@ -80,11 +91,11 @@ export default function Timeline({ route }) {
     </Step>
   ));
 
-  function handleAddStep(key) {
-    if (key) {
+  function handleAddStep() {
+    if (selectedStep) {
       const stepRef = ref(
         db,
-        "concursos/" + user.uid + "/" + data + "/cronograma/" + key
+        "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
       );
       onValue(stepRef, (snapshot) => {
         setStepName(snapshot.val().etapa);
@@ -96,8 +107,11 @@ export default function Timeline({ route }) {
   }
 
   function addStep() {
+    if (stepName === "" || initialDate === "") {
+      alert("Por favor, insira todos os dados");
+      return;
+    }
     const stepKey = push(timelineRef);
-
     set(stepKey, {
       etapa: stepName,
       initialDate: initialDate,
@@ -113,13 +127,56 @@ export default function Timeline({ route }) {
         alert(error.message);
       });
   }
+  function editStep() {
+    const stepRef = ref(
+      db,
+      "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
+    );
+    update(stepRef, {
+      etapa: stepName,
+      initialDate: initialDate,
+      finalDate: finalDate,
+    })
+      .then(() => {
+        setStepName("");
+        setInitialDate("");
+        setFinalDate("");
+        setEditing(false);
+        setSelectedStep();
+        setModalVisible(false);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+
+  function deleteStep() {
+    const stepRef = ref(
+      db,
+      "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
+    );
+    remove(stepRef).then(() => {
+      setStepName("");
+      setInitialDate("");
+      setFinalDate("");
+      setEditing(false);
+      setSelectedStep();
+      setModalVisible(false);
+      alert("Etapa ecluída com sucesso");
+    });
+  }
 
   function cancelAddStep() {
     setStepName("");
     setInitialDate("");
     setFinalDate("");
     setEditing(false);
+    setSelectedStep();
     setModalVisible(false);
+  }
+
+  function help() {
+    alert("Para editar ou deletar uma etapa, mantenha pressionado o elemento");
   }
 
   return (
@@ -158,7 +215,7 @@ export default function Timeline({ route }) {
                   marginRight: "auto",
                 }}
               >
-                <ModalButton onPress={addStep}>
+                <ModalButton onPress={editing ? editStep : addStep}>
                   <Text style={{ color: "#FFF" }}>
                     {editing ? "Editar" : "Adicionar"}
                   </Text>
@@ -169,11 +226,25 @@ export default function Timeline({ route }) {
                 >
                   <Text style={{ color: "#FFF" }}>Cancelar</Text>
                 </ModalButton>
+                {editing && (
+                  <ModalButton
+                    style={{ backgroundColor: "#AC3F3F" }}
+                    onPress={deleteStep}
+                  >
+                    <Text style={{ color: "#FFF" }}>Excluir</Text>
+                  </ModalButton>
+                )}
               </View>
             </ModalContent>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+      <TouchableOpacity
+        style={{ marginLeft: "auto", marginRight: "5%", marginTop: 20 }}
+        onPress={help}
+      >
+        <FontAwesome name="question-circle" size={24} color="black" />
+      </TouchableOpacity>
       <TitleWrapper>
         <Text style={{ color: "#3865A8", fontSize: 20 }}>Cronograma</Text>
         <TouchableOpacity

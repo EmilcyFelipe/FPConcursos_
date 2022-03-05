@@ -10,14 +10,14 @@ export const TitleWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   width: 90%;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 10px;
 `;
 
 export const Step = styled.TouchableOpacity`
   background-color: #121212;
   width: 90%;
-  height: 70px;
+  border-radius: 5px;
   margin-bottom: 20px;
   flex-direction: row;
   justify-content: space-between;
@@ -26,14 +26,14 @@ export const Step = styled.TouchableOpacity`
 `;
 
 export const StepText = styled.Text`
-  font-size: 25px;
+  font-size: 20px;
   color: #fff;
 `;
 
 export const StepDate = styled.View``;
 
 export const StepDateText = styled.Text`
-  font-size: 18px;
+  font-size: 16px;
   color: #fff;
 `;
 
@@ -66,8 +66,9 @@ export const ModalInput = styled.TextInput.attrs({
 `;
 
 export const ModalButton = styled.TouchableOpacity`
-  width: 40%;
+  width: 30%;
   padding: 10px;
+  height: 50px;
   background-color: #3865a8;
   border-radius: 10px;
   margin-top: 10px;

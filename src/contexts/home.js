@@ -12,6 +12,7 @@ function HomeProvider({ children }) {
     "-MuSOuNrA9hV5Xa3Aey3"
   );
 
+  const [loadingSteps, setLoadingSteps] = useState(true);
   const db = getDatabase(app);
   const [timelineSteps, setTimelineSteps] = useState([]);
   const timelineRef = ref(
@@ -32,13 +33,16 @@ function HomeProvider({ children }) {
           };
           setTimelineSteps((oldArray) => [...oldArray, timeItem]);
         });
+        setLoadingSteps(false);
       });
     }
     loadList();
   }, []);
 
   return (
-    <HomeContext.Provider value={{ timelineSteps, concursoSelected }}>
+    <HomeContext.Provider
+      value={{ timelineSteps, concursoSelected, loadingSteps }}
+    >
       {children}
     </HomeContext.Provider>
   );

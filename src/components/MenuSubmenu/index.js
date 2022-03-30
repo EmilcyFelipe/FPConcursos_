@@ -1,22 +1,119 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert, Modal } from "react-native";
 import { Container, MainMenu, Submenu, SubmenuText } from "./styles";
 
-import { MaterialIcons } from "@expo/vector-icons";
+import ModalSubmenu from "../ModalSubmenu";
 
-export default function MenuSubmenu({ data }) {
+import { MaterialIcons } from "@expo/vector-icons";
+import {
+  getDatabase,
+  remove,
+  ref,
+  onValue,
+  set,
+  push,
+} from "firebase/database";
+import app from "../../services/firebaseConnection";
+import { AuthContext } from "../../contexts/auth";
+import { HomeContext } from "../../contexts/home";
+
+export default function MenuSubmenu({ data, concursoSelected }) {
   const [subject, setSubject] = useState(data);
   const [showSubs, setShowSubs] = useState(false);
+  const [modalSubmenuVisible, setModalSubmenuVisible] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState("");
 
-  const subMenus = subject.matters.map((item) => (
-    <Submenu>
-      <Text style={{ color: "#FF5C00" }}>{item.name}</Text>
-    </Submenu>
-  ));
+  const { user } = useContext(AuthContext);
+
+  const db = getDatabase(app);
+
+  var subMenus;
+  useEffect(() => {
+    if (subject.matters) {
+      subMenus = subject.matters.map((item) => (
+        <Submenu key={item.key}>
+          <Text>{item.name}</Text>
+        </Submenu>
+      ));
+    }
+  }, [subject]);
+  function handleModalSubmenu() {
+    setModalSubmenuVisible(true);
+    setSelectedSubject(subject);
+  }
+  function handleDeleteSubject() {
+    Alert.alert(
+      "Tem certeza que deseja excluir esse conteúdo?",
+      "Essa ação não é reversível",
+      [
+        {
+          text: "Excluir",
+          style: "default",
+          onPress: deleteSubject,
+        },
+        {
+          text: "Cancelar",
+          style: "cancel",
+          onPress: () => {},
+        },
+      ]
+    );
+  }
+  function deleteSubject() {
+    const subjectRef = ref(
+      db,
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/subjects/" +
+        subject.key
+    );
+    remove(subjectRef)
+      .then(() => {
+        alert("Conteúdo excluído com sucesso");
+      })
+      .catch((err) => {
+        alert("Ops, algo inesperado aconteceu");
+      });
+  }
+
+  function addContent(subject, value) {
+    const contentRef = ref(
+      db,
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/subjects/" +
+        selectedSubject.key +
+        "/matters"
+    );
+    let contentKey = push(contentRef);
+    set(contentKey, {
+      name: value,
+    }).then(() => {
+      alert("adicionado");
+    });
+  }
   return (
     <Container>
-      <MainMenu onPress={() => setShowSubs(!showSubs)}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalSubmenuVisible}
+      >
+        <ModalSubmenu
+          showModalSubmenu={setModalSubmenuVisible}
+          addContent={addContent}
+          selectedSubject={selectedSubject}
+        ></ModalSubmenu>
+      </Modal>
+      <MainMenu
+        onPress={() => setShowSubs(!showSubs)}
+        onLongPress={handleDeleteSubject}
+      >
         <Text style={{ color: "#FFF", fontSize: 20 }}>{subject.name}</Text>
         <MaterialIcons
           name={showSubs ? "expand-less" : "expand-more"}
@@ -26,7 +123,11 @@ export default function MenuSubmenu({ data }) {
       </MainMenu>
       {showSubs && (
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              handleModalSubmenu();
+            }}
+          >
             <Text style={{ color: "#FFF", marginLeft: "auto", marginRight: 0 }}>
               Inserir
             </Text>

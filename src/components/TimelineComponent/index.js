@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { HomeContext } from "../../contexts/home";
 import { Container, TimeLineWrapper, StepBox } from "./styles";
 
 export default function TimelineComponent({ data }) {
-  const { timelineSteps } = useContext(HomeContext);
+  const { timelineSteps, loadingSteps } = useContext(HomeContext);
+
+  if (loadingSteps) {
+    return (
+      <Container>
+        <ActivityIndicator color="white" size="large" />
+      </Container>
+    );
+  }
 
   return (
     <Container>

@@ -28,7 +28,7 @@ export default function Home() {
 
   const db = getDatabase(app);
 
-  if (concursoSelected === null) {
+  if (concursoSelected === "") {
     return (
       <Container>
         <Header />
@@ -46,46 +46,46 @@ export default function Home() {
     );
   }
   return (
-    <HomeProvider>
-      <Container>
-        <Header />
-        <Welcome>
-          Bem vind{user.genrer === "F" ? "a" : "o"}, {user.name}
-        </Welcome>
-        <TimelineComponent data={concursoSelected} />
-        <ActionsWrapper>
-          <ActionRow>
-            <ActionItem
-              onPress={() => {
-                navigation.navigate("Timeline", {
-                  data: "-MuSOuNrA9hV5Xa3Aey3",
-                });
-              }}
-            >
-              <ActionText>Cronograma</ActionText>
-            </ActionItem>
-            <ActionItem
-              onPress={() => {
-                navigation.navigate("Subjects");
-              }}
-            >
-              <ActionText>Conteúdo</ActionText>
-            </ActionItem>
-          </ActionRow>
-          <ActionRow>
-            <ActionItem
-              onPress={() => {
-                navigation.navigate("PerformanceBasis");
-              }}
-            >
-              <ActionText>Desempenho</ActionText>
-            </ActionItem>
-            <ActionItem>
-              <ActionText>Visão Geral</ActionText>
-            </ActionItem>
-          </ActionRow>
-        </ActionsWrapper>
-      </Container>
-    </HomeProvider>
+    <Container>
+      <Header concursoSelected={concursoSelected} />
+      <Welcome>
+        Bem vind{user.genrer === "F" ? "a" : "o"}, {user.name}
+      </Welcome>
+      <TimelineComponent data={concursoSelected} />
+      <ActionsWrapper>
+        <ActionRow>
+          <ActionItem
+            onPress={() => {
+              navigation.navigate("Timeline", {
+                data: concursoSelected,
+              });
+            }}
+          >
+            <ActionText>Cronograma</ActionText>
+          </ActionItem>
+          <ActionItem
+            onPress={() => {
+              navigation.navigate("Subjects", {
+                concursoSelected: concursoSelected,
+              });
+            }}
+          >
+            <ActionText>Conteúdo</ActionText>
+          </ActionItem>
+        </ActionRow>
+        <ActionRow>
+          <ActionItem
+            onPress={() => {
+              navigation.navigate("PerformanceBasis");
+            }}
+          >
+            <ActionText>Desempenho</ActionText>
+          </ActionItem>
+          <ActionItem>
+            <ActionText>Visão Geral</ActionText>
+          </ActionItem>
+        </ActionRow>
+      </ActionsWrapper>
+    </Container>
   );
 }

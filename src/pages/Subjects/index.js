@@ -6,72 +6,83 @@ import { Container, TitleWrapper } from "./styles";
 import Header from "../../components/Header";
 import MenuSubmenu from "../../components/MenuSubmenu";
 import ModalSubject from "../../components/ModalSubject";
-
-import { getDatabase, onValue, push, ref, set } from "firebase/database";
-import app from "../../services/firebaseConnection";
+import ModalSubmenu from "../../components/ModalSubmenu";
 
 import { AuthContext } from "../../contexts/auth";
 import { HomeContext } from "../../contexts/home";
 
-export default function Subjects() {
+import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import app from "../../services/firebaseConnection";
+
+export default function Subjects({ route }) {
   const { user } = useContext(AuthContext);
-  const { concursoSelected } = useContext(HomeContext);
+  const [concursoSelected, setConcursoSelected] = useState(
+    route.params.concursoSelected
+  );
 
   const db = getDatabase(app);
-  const subjectRef = ref(db, "concursos/" + user.uid + "/" + concursoSelected);
+  const subjectRef = ref(
+    db,
+    "concursos/" + user.uid + "/" + concursoSelected + "/subjects"
+  );
 
-  const [subObject, setSubsObject] = useState([
-    {
-      name: "Portugues",
-      matters: [
-        { name: "Pronome" },
-        { name: "Vírgula" },
-        { name: "Acentuação" },
-      ],
-    },
-    {
-      name: "Raciocínio Logico",
-      matters: [
-        { name: "Arranjo" },
-        { name: "Combinação" },
-        { name: "Algebra" },
-      ],
-    },
-    {
-      name: "Constitucional",
-      matters: [
-        { name: "Principios" },
-        { name: "Objetivos" },
-        { name: "blablabla" },
-      ],
-    },
-  ]);
+  const [subsObject, setSubsObject] = useState([]);
+
   useEffect(() => {
-    console.log(concursoSelected);
-  }, [concursoSelected]);
+    onValue(subjectRef, (snapshot) => {
+      setSubsObject([]);
+      snapshot.forEach((childItem) => {
+        if (childItem.val().matters) {
+          console.log(childItem.val().matters);
+          var matters = [];
+          var obj = childItem.val().matters;
+          Object.keys(obj).forEach((item) => {
+            let matter = {
+              key: item,
+              name: obj[item].name,
+            };
+            matters = [...matters, matter];
+          });
+        }
+        let subjectItem = {
+          key: childItem.key,
+          name: childItem.val().name,
+          matters: matters,
+        };
+        setSubsObject((oldArray) => [...oldArray, subjectItem]);
+      });
+    });
+  }, []);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalSubjectVisible, setModalSubjectVisible] = useState(false);
 
   function handleAdd() {
-    setModalVisible(true);
+    setModalSubjectVisible(true);
   }
   function addSubject(value) {
+    setSubsObject();
     const subjectKey = push(subjectRef);
     set(subjectKey, {
       name: value,
     });
-    setSubsObject([...subObject, { name: value, matters: [] }]);
-    setModalVisible(false);
+    setSubsObject([...subsObject, { name: value }]);
+    setModalSubjectVisible(false);
     Keyboard.dismiss();
   }
 
-  let subjectMenu = subObject.map((item) => <MenuSubmenu data={item} />);
+  let subjectMenu = subsObject.map((item) => (
+    <MenuSubmenu data={item} concursoSelected={concursoSelected} />
+  ));
   return (
     <Container>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <ModalSubject shows={setModalVisible} addSubject={addSubject} />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalSubjectVisible}
+      >
+        <ModalSubject shows={setModalSubjectVisible} addSubject={addSubject} />
       </Modal>
-      <Header goBack={true} />
+      <Header goBack={true} concursoSelected={concursoSelected} />
       <TitleWrapper>
         <Text style={{ color: "#3865A8", fontSize: 20 }}>
           Conteúdo Sintético

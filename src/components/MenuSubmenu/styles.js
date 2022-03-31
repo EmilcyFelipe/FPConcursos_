@@ -13,7 +13,7 @@ export const MainMenu = styled.TouchableOpacity`
   justify-content: space-between;
 `;
 
-export const Submenu = styled.View`
+export const Submenu = styled.TouchableOpacity`
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 10px;

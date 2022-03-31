@@ -18,6 +18,7 @@ export default function ModalSubmenu({
   function handleAddContent() {
     if (contentValue) {
       addContent(selectedSubject, contentValue);
+      setContentValue("");
     }
   }
   function cancel() {

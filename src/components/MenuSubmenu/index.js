@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { View, Text, TouchableOpacity, Alert, Modal } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Keyboard,
+} from "react-native";
 import { Container, MainMenu, Submenu, SubmenuText } from "./styles";
 
 import ModalSubmenu from "../ModalSubmenu";
@@ -19,7 +26,6 @@ import { AuthContext } from "../../contexts/auth";
 import { HomeContext } from "../../contexts/home";
 
 export default function MenuSubmenu({ data, concursoSelected }) {
-  const [subject, setSubject] = useState(data);
   const [showSubs, setShowSubs] = useState(false);
   const [modalSubmenuVisible, setModalSubmenuVisible] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -27,20 +33,19 @@ export default function MenuSubmenu({ data, concursoSelected }) {
   const { user } = useContext(AuthContext);
 
   const db = getDatabase(app);
-
   var subMenus;
-  useEffect(() => {
-    if (subject.matters) {
-      subMenus = subject.matters.map((item) => (
-        <Submenu key={item.key}>
-          <Text>{item.name}</Text>
-        </Submenu>
-      ));
-    }
-  }, [subject]);
+
+  if (data.matters) {
+    subMenus = data.matters.map((item) => (
+      <Submenu key={item.key}>
+        <Text>{item.name}</Text>
+      </Submenu>
+    ));
+  }
+
   function handleModalSubmenu() {
     setModalSubmenuVisible(true);
-    setSelectedSubject(subject);
+    setSelectedSubject(data);
   }
   function handleDeleteSubject() {
     Alert.alert(
@@ -63,12 +68,7 @@ export default function MenuSubmenu({ data, concursoSelected }) {
   function deleteSubject() {
     const subjectRef = ref(
       db,
-      "concursos/" +
-        user.uid +
-        "/" +
-        concursoSelected +
-        "/subjects/" +
-        subject.key
+      "concursos/" + user.uid + "/" + concursoSelected + "/subjects/" + data.key
     );
     remove(subjectRef)
       .then(() => {
@@ -94,6 +94,8 @@ export default function MenuSubmenu({ data, concursoSelected }) {
     set(contentKey, {
       name: value,
     }).then(() => {
+      setModalSubmenuVisible(false);
+      Keyboard.dismiss();
       alert("adicionado");
     });
   }
@@ -114,7 +116,7 @@ export default function MenuSubmenu({ data, concursoSelected }) {
         onPress={() => setShowSubs(!showSubs)}
         onLongPress={handleDeleteSubject}
       >
-        <Text style={{ color: "#FFF", fontSize: 20 }}>{subject.name}</Text>
+        <Text style={{ color: "#FFF", fontSize: 20 }}>{data.name}</Text>
         <MaterialIcons
           name={showSubs ? "expand-less" : "expand-more"}
           size={24}

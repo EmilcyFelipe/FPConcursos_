@@ -33,7 +33,6 @@ export default function Subjects({ route }) {
       setSubsObject([]);
       snapshot.forEach((childItem) => {
         if (childItem.val().matters) {
-          console.log(childItem.val().matters);
           var matters = [];
           var obj = childItem.val().matters;
           Object.keys(obj).forEach((item) => {

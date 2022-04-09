@@ -50,7 +50,7 @@ export default function Timeline({ route }) {
   const db = getDatabase(app);
 
   const [items, setItems] = useState([]);
-  const data = route.params.data;
+  const [data, setData] = useState(route.params.concursoSelected);
   const timelineRef = ref(
     db,
     "concursos/" + user.uid + "/" + data + "/cronograma"
@@ -181,7 +181,7 @@ export default function Timeline({ route }) {
 
   return (
     <Container>
-      <Header goBack={true} />
+      <Header goBack={true} concursoSelected={route.params.concursoSelected} />
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <TouchableWithoutFeedback
           onPress={() => {

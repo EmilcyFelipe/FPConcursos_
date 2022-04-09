@@ -64,13 +64,17 @@ export default function Subjects({ route }) {
     set(subjectKey, {
       name: value,
     });
-    setSubsObject([...subsObject, { name: value }]);
+    setSubsObject([...subsObject, { key: subjectKey, name: value }]);
     setModalSubjectVisible(false);
     Keyboard.dismiss();
   }
 
   let subjectMenu = subsObject.map((item) => (
-    <MenuSubmenu data={item} concursoSelected={concursoSelected} />
+    <MenuSubmenu
+      data={item}
+      subKey={item.key}
+      concursoSelected={concursoSelected}
+    />
   ));
   return (
     <Container>

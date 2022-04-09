@@ -4,8 +4,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import DataHome from "../pages/DataHome";
 import Timeline from "../pages/Timeline";
 import Subjects from "../pages/Subjects";
-import PerformanceBasis from "../pages/PerformanceBasis";
+
 import Performance from "../pages/Performance";
+import PerformanceRoutes from "./performance.routes";
 
 export default function HomeRoutes() {
   const HomeStack = createStackNavigator();
@@ -27,14 +28,9 @@ export default function HomeRoutes() {
         component={Subjects}
       />
       <HomeStack.Screen
-        name="PerformanceBasis"
-        options={{ headerShown: false }}
-        component={PerformanceBasis}
-      />
-      <HomeStack.Screen
         name="Performance"
         options={{ headerShown: false }}
-        component={Performance}
+        component={PerformanceRoutes}
       />
     </HomeStack.Navigator>
   );

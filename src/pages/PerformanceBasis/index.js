@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import { View, Text } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
 
 import {
   Container,
@@ -9,7 +11,11 @@ import {
   SyntheticPerformance,
 } from "./styles";
 
-export default function PerformanceBasis() {
+export default function PerformanceBasis({ route }) {
+  const navigation = useNavigation();
+  const [concursoSelected, setConcursoSelected] = useState(
+    route.params.concursoSelected
+  );
   const [subjectList, setSubjectList] = useState([
     {
       key: "portugues",
@@ -34,14 +40,21 @@ export default function PerformanceBasis() {
   ]);
 
   let syntheticList = subjectList.map((item) => (
-    <SyntheticPerformance onPress={()=>{}}>
+    <SyntheticPerformance
+      onPress={() => {
+        navigation.navigate("Performance", {
+          concursoSelected: concursoSelected,
+          performanceKey: item.key,
+        });
+      }}
+    >
       <Text style={{ color: "#FFF", fontSize: 20 }}>{item.name}</Text>
       <Text style={{ color: "#FF8A00", fontSize: 20 }}>{item.performance}</Text>
     </SyntheticPerformance>
   ));
   return (
     <Container>
-      <Header goBack={true} />
+      <Header goBack={true} concursoSelected={concursoSelected} />
       <TitleWrapper>
         <Text style={{ color: "#3865a8", fontSize: 25, marginTop: 20 }}>
           Desempenho Sintético

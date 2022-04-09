@@ -57,7 +57,7 @@ export default function Home() {
           <ActionItem
             onPress={() => {
               navigation.navigate("Timeline", {
-                data: concursoSelected,
+                concursoSelected: concursoSelected,
               });
             }}
           >
@@ -76,7 +76,9 @@ export default function Home() {
         <ActionRow>
           <ActionItem
             onPress={() => {
-              navigation.navigate("PerformanceBasis");
+              navigation.navigate("Performance", {
+                concursoSelected: concursoSelected,
+              });
             }}
           >
             <ActionText>Desempenho</ActionText>

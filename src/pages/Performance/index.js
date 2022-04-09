@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 
 import Header from "../../components/Header";
 
 import { Container, Historic, TitleWrapper, PerformanceChart } from "./styles";
+import ModalHistoric from "../../components/ModalHistoric";
 
 import {
   Chart,
@@ -13,7 +14,7 @@ import {
   Area,
 } from "react-native-responsive-linechart";
 
-export default function Performance() {
+export default function Performance({ route }) {
   const [historic, setHistoric] = useState([
     {
       value: "90/100",
@@ -28,6 +29,8 @@ export default function Performance() {
       date: "25/05/20022",
     },
   ]);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const historicItems = historic.map((item) => (
     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -50,10 +53,13 @@ export default function Performance() {
 
   return (
     <Container>
-      <Header goBack={true} />
+      <Modal visible={modalVisible} transparent={true}>
+        <ModalHistoric shows={setModalVisible} />
+      </Modal>
+      <Header goBack={true} concursoSelected={route.params.concursoSelected} />
       <TitleWrapper>
         <Text style={{ color: "#3865A8", fontSize: 20 }}>Português</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={{ color: "#FFF", fontSize: 20 }}>Inserir</Text>
         </TouchableOpacity>
       </TitleWrapper>

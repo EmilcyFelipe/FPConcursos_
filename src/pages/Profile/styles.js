@@ -7,6 +7,8 @@ export const Container = styled.View`
   align-items: center;
 `;
 
+export const UserInformations = styled.View``;
+
 export const ExitButton = styled.TouchableOpacity`
   width: 90%;
   padding: 10px;

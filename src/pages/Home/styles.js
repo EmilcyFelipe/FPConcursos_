@@ -26,8 +26,8 @@ export const ActionRow = styled.View`
 `;
 
 export const ActionItem = styled.TouchableOpacity`
-  height: 120px;
-  width: 120px;
+  height: 140px;
+  width: 140px;
   background-color: #1c1c1c;
   border-radius: 10px;
   justify-content: center;

@@ -1,5 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { HomeContext } from "../../contexts/home";
@@ -7,6 +13,7 @@ import { Container, TimeLineWrapper, StepBox } from "./styles";
 
 export default function TimelineComponent({ data }) {
   const { timelineSteps, loadingSteps } = useContext(HomeContext);
+  const activity = useRef();
 
   if (loadingSteps) {
     return (
@@ -18,10 +25,19 @@ export default function TimelineComponent({ data }) {
 
   return (
     <Container>
+      <TouchableOpacity
+        onPress={() => {
+          console.log(activity.current);
+        }}
+      >
+        <Text>olasdf</Text>
+      </TouchableOpacity>
       {timelineSteps === [] ? (
         <Text>Adicione seu Cronograma</Text>
       ) : (
         <TimeLineWrapper
+          ref={activity}
+          initialScrollIndex={4}
           horizontal={true}
           data={timelineSteps}
           showsHorizontalScrollIndicator={false}

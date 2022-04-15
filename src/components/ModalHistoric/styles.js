@@ -8,20 +8,26 @@ export const Container = styled.View`
   border-radius: 10px;
 `;
 
-export const ValueInput = styled.TextInput`
+export const ValueInput = styled.TextInput.attrs({
+  placeholderTextColor: "#FFF",
+})`
   background-color: #121212;
   border-radius: 5px;
   margin-top: 10px;
-  padding: 5px;
+  padding: 10px;
   color: #fff;
+  font-size: 16px;
 `;
 
-export const DateInput = styled.TextInput`
+export const DateInput = styled.TextInput.attrs({
+  placeholderTextColor: "#FFF",
+})`
   background-color: #121212;
   border-radius: 5px;
   margin-top: 10px;
-  padding: 5px;
+  padding: 10px;
   color: #fff;
+  font-size: 16px;
 `;
 
 export const ActionView = styled.View`

@@ -1,118 +1,166 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import React, { useEffect, useState, useContext } from "react";
+import { View, Text, TouchableOpacity, Modal, Dimensions } from "react-native";
+
+import { AuthContext } from "../../contexts/auth";
 
 import Header from "../../components/Header";
-
 import { Container, Historic, TitleWrapper, PerformanceChart } from "./styles";
 import ModalHistoric from "../../components/ModalHistoric";
 
-import {
-  Chart,
-  VerticalAxis,
-  HorizontalAxis,
-  Line,
-  Area,
-} from "react-native-responsive-linechart";
+import { getDatabase, onValue, ref, push, set } from "firebase/database";
+import app from "../../services/firebaseConnection";
+
+import { LineChart } from "react-native-chart-kit";
+import { FlatList } from "react-native-gesture-handler";
 
 export default function Performance({ route }) {
-  const [historic, setHistoric] = useState([
-    {
-      value: "90/100",
-      date: "20/05/20022",
-    },
-    {
-      value: "93/100",
-      date: "22/05/20022",
-    },
-    {
-      value: "93/100",
-      date: "25/05/20022",
-    },
-  ]);
+  const [concursoSelected, setConcursoSelected] = useState(
+    route.params.concursoSelected
+  );
+  const [subjectKey, setSubjectKey] = useState(route.params.subjectKey);
+  const { user } = useContext(AuthContext);
+  const [subjectData, setSubjectData] = useState("");
+
+  const db = getDatabase(app);
+  const [historic, setHistoric] = useState([]);
+
+  const subjectRef = ref(
+    db,
+    "concursos/" + user.uid + "/" + concursoSelected + "/subjects/" + subjectKey
+  );
+
+  useEffect(() => {
+    onValue(
+      subjectRef,
+      (snapshot) => {
+        setHistoric([]);
+        let perforObj = snapshot.val().performance;
+        if (perforObj) {
+          Object.keys(perforObj).forEach((item) => {
+            let perforItem = {
+              value: perforObj[item].value,
+              id: perforObj[item].id,
+            };
+            setHistoric((oldList) => [...oldList, perforItem]);
+          });
+        }
+        setSubjectData(snapshot.val());
+      },
+      { onlyOnce: true }
+    );
+  }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const historicItems = historic.map((item) => (
-    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-      <Text style={{ color: "#fff" }}>{item.value}</Text>
-      <Text style={{ color: "#fff" }}>{item.date}</Text>
-    </View>
-  ));
+  function addHistoric(value, id) {
+    if (value === "" || id === "") {
+      alert("Campo com informação ausente");
+    } else {
+      const performanceRef = ref(
+        db,
+        "concursos/" +
+          user.uid +
+          "/" +
+          concursoSelected +
+          "/subjects/" +
+          subjectKey +
+          "/performance"
+      );
+      let perfKey = push(performanceRef);
+      set(perfKey, {
+        value: value,
+        id: id,
+      }).then(() => {
+        setHistoric([
+          ...historic,
+          {
+            key: value,
+            value: value,
+            id: id,
+          },
+        ]);
+      });
+    }
+    setModalVisible(false);
+  }
 
-  //chart data
-  const data2 = [
-    { x: 0, y: 12 },
-    { x: 2, y: 20 },
-    { x: 3, y: 40 },
-    { x: 4, y: 50 },
-    { x: 5, y: 55 },
-    { x: 8, y: 60 },
-    { x: 9, y: 70 },
-    { x: 10, y: 90 },
-  ];
+  let xAxios = historic.map((item) => item.id);
+  let yAxios = historic.map((item) => item.value);
+
+  console.log(typeof yAxios[0]);
 
   return (
     <Container>
       <Modal visible={modalVisible} transparent={true}>
-        <ModalHistoric shows={setModalVisible} />
+        <ModalHistoric shows={setModalVisible} addHistoric={addHistoric} />
       </Modal>
       <Header goBack={true} concursoSelected={route.params.concursoSelected} />
       <TitleWrapper>
-        <Text style={{ color: "#3865A8", fontSize: 20 }}>Português</Text>
+        <Text style={{ color: "#3865A8", fontSize: 20 }}>
+          {subjectData.name}
+        </Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Text style={{ color: "#FFF", fontSize: 20 }}>Inserir</Text>
         </TouchableOpacity>
       </TitleWrapper>
       <Historic>
         <Text style={{ fontSize: 18, color: "#fff" }}>Histórico</Text>
-        {historicItems}
+        <FlatList
+          data={historic}
+          renderItem={({ item }) => (
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={{ color: "#fff" }}>{item.id}</Text>
+              <Text style={{ color: "#fff" }}>{item.value}</Text>
+            </View>
+          )}
+        />
       </Historic>
       <PerformanceChart>
-        <Chart
-          style={{ height: 200, width: "100%" }}
-          xDomain={{ min: 0, max: 10 }}
-          yDomain={{ min: 0, max: 100 }}
-          padding={{ left: 20, top: 20, bottom: 20, right: 10 }}
-          data={data2}
-        >
-          <VerticalAxis
-            tickValues={[0, 20, 40, 60, 80, 100]}
-            theme={{
-              labels: {
-                formatter: (v) => v.toFixed(0),
-                label: { color: "#fff", fontSize: 14 },
+        <LineChart
+          data={{
+            labels: xAxios,
+            datasets: [
+              {
+                data: yAxios.length >= 1 ? yAxios : [0],
               },
-            }}
-          />
-          <HorizontalAxis
-            tickCount={10}
-            theme={{
-              labels: {
-                formatter: (v) => v.toFixed(0),
-                label: { color: "#fff", fontSize: 14 },
-              },
-            }}
-          />
-          <Area
-            smoothing="cubic-spline"
-            theme={{
-              gradient: {
-                from: {
-                  color: "#A6CEE3",
-                  opacity: 1,
-                },
-                to: {
-                  color: "blue",
-                  opacity: 0.2,
-                },
-              },
-            }}
-          />
-          <Line
-            smoothing="cubic-spline"
-            theme={{ stroke: { color: "#FF5C00", width: 2 } }}
-          />
-        </Chart>
+            ],
+          }}
+          onDataPointClick={({ value }) => {
+            alert(value);
+          }}
+          width={Dimensions.get("window").width * 0.9} // from react-native
+          height={300}
+          yAxisInterval={1} // optional, defaults to 1
+          yAxisSuffix="/100"
+          fromZero={true}
+          verticalLabelRotation={65}
+          segments={
+            [...new Set(yAxios)].length > 5 ? 5 : [...new Set(yAxios)].length
+          }
+          chartConfig={{
+            backgroundColor: "BLACK",
+            backgroundGradientFrom: "#3865A8",
+            backgroundGradientTo: "#BDBDBD",
+            decimalPlaces: 0, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: "1",
+              strokeWidth: "2",
+              stroke: "#FFFF",
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+        />
       </PerformanceChart>
     </Container>
   );

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #1c1c1c;
-  justify-content: center;
+  padding-top: 30px;
 `;
 
 export const Title = styled.Text`
-  font-size: 12px;
+  font-size: 14px;
   color: #ff5c00;
   margin-left: 5%;
 `;
@@ -19,10 +19,9 @@ export const InputArea = styled.View`
 export const Input = styled.TextInput.attrs({
   placeholderTextColor: "#505050",
 })`
-  padding: 10px;
+  padding: 15px;
   font-size: 18px;
   width: 90%;
-  height: 50px;
   background-color: #121212;
   margin-top: 20px;
   border-radius: 10px;

@@ -90,6 +90,7 @@ function AuthProvider({ children }) {
     signOut(auth)
       .then(() => {
         setUser(null);
+        storageUser("");
         alert("usuário deslogado");
       })
       .catch((error) => {
@@ -100,7 +101,6 @@ function AuthProvider({ children }) {
   async function storageUser(data) {
     try {
       await AsyncStorage.setItem("Auth_user", JSON.stringify(data));
-      console.log("gravado com sucesso");
     } catch (error) {
       alert(error.message);
     }

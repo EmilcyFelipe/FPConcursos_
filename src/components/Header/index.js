@@ -14,24 +14,29 @@ import { getDatabase, ref, onValue } from "firebase/database";
 export default function Header({ data, goBack, concursoSelected }) {
   const db = getDatabase(app);
   const { user } = useContext(AuthContext);
-  const concursoRef = ref(db, "concursos/" + user.uid + "/" + concursoSelected);
   const [concursoCargo, setConcursoCargo] = useState();
   const [concursoSigla, setConcursoSigla] = useState();
-  if (concursoSelected) {
-    useEffect(() => {
-      onValue(
-        concursoRef,
-        (snapshot) => {
+  useEffect(() => {
+    const concursoRef = ref(
+      db,
+      "concursos/" + user.uid + "/" + concursoSelected
+    );
+
+    onValue(
+      concursoRef,
+      (snapshot) => {
+        if (concursoSelected) {
           setConcursoCargo(snapshot.val().cargo);
           setConcursoSigla(snapshot.val().sigla);
-        },
-        { onlyOnce: true }
-      );
-    }, []);
-  } else {
-    setConcursoCargo("Selecione um concurso");
-    setConcursoSigla("");
-  }
+        } else {
+          setConcursoCargo("Selecione um concurso");
+          setConcursoSigla("");
+        }
+      },
+      { onlyOnce: true }
+    );
+  }, []);
+
   function headerButton() {
     if (goBack) {
       navigation.goBack();

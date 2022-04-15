@@ -17,7 +17,9 @@ export const Historic = styled.View`
   padding: 20px;
   background-color: #121212;
   width: 90%;
+  height: 30%;
   margin-top: 20px;
+  border-radius: 10px;
 `;
 
 export const PerformanceChart = styled.View`

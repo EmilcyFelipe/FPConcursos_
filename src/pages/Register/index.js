@@ -14,6 +14,8 @@ import {
 
 import { AuthContext } from "../../contexts/auth";
 
+import ContentIcon from "../../assets/content.svg";
+
 import { app } from "../../services/firebaseConnection";
 import { set, ref, getDatabase, push } from "firebase/database";
 
@@ -57,6 +59,9 @@ export default function Register() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Container>
         <Title>Adicione um concurso</Title>
+        <View style={{ alignItems: "center" }}>
+          <ContentIcon width={200} height={200} />
+        </View>
         <InputArea>
           <Input
             placeholder="Órgão..."

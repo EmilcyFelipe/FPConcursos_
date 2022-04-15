@@ -20,6 +20,10 @@ import { useNavigation } from "@react-navigation/native";
 import app from "../../services/firebaseConnection";
 import { getDatabase, ref, onValue } from "firebase/database";
 
+import TimelineIcon from "../../assets/timeline.svg";
+import ConteudoIcon from "../../assets/subject.svg";
+import PerformanceIcon from "../../assets/performance.svg";
+
 export default function Home() {
   const { user } = useContext(AuthContext);
   const { concursoSelected } = useContext(HomeContext);
@@ -61,6 +65,7 @@ export default function Home() {
               });
             }}
           >
+            <TimelineIcon width={80} height={80} />
             <ActionText>Cronograma</ActionText>
           </ActionItem>
           <ActionItem
@@ -70,6 +75,7 @@ export default function Home() {
               });
             }}
           >
+            <ConteudoIcon width={80} height={80} />
             <ActionText>Conteúdo</ActionText>
           </ActionItem>
         </ActionRow>
@@ -81,9 +87,11 @@ export default function Home() {
               });
             }}
           >
+            <PerformanceIcon width={80} height={80} />
             <ActionText>Desempenho</ActionText>
           </ActionItem>
           <ActionItem>
+            <TimelineIcon width={80} height={80} />
             <ActionText>Visão Geral</ActionText>
           </ActionItem>
         </ActionRow>

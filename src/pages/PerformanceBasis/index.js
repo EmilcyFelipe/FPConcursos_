@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Header from "../../components/Header";
 import { View, Text } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../contexts/auth";
+import app from "../../services/firebaseConnection";
+import { getDatabase, onValue, ref } from "firebase/database";
 
 import {
   Container,
@@ -13,38 +16,38 @@ import {
 
 export default function PerformanceBasis({ route }) {
   const navigation = useNavigation();
+
+  const { user } = useContext(AuthContext);
+  const db = getDatabase(app);
   const [concursoSelected, setConcursoSelected] = useState(
     route.params.concursoSelected
   );
-  const [subjectList, setSubjectList] = useState([
-    {
-      key: "portugues",
-      name: "Portugues",
-      performance: "90/100",
-    },
-    {
-      key: "constitucional",
-      name: "Constitucional",
-      performance: "90/100",
-    },
-    {
-      key: "raciocinio logico",
-      name: "Raciocínio Lógico",
-      performance: "70/100",
-    },
-    {
-      key: "informatica",
-      name: "Informática",
-      performance: "80/100",
-    },
-  ]);
+  const [subjectList, setSubjectList] = useState([]);
+
+  useEffect(() => {
+    const subjectRef = ref(
+      db,
+      "concursos/" + user.uid + "/" + concursoSelected + "/subjects"
+    );
+    onValue(subjectRef, (snapshot) => {
+      setSubjectList([]);
+      snapshot.forEach((childItem) => {
+        let item = {
+          key: childItem.key,
+          name: childItem.val().name,
+          performance: "90/100",
+        };
+        setSubjectList((oldList) => [...oldList, item]);
+      });
+    });
+  }, []);
 
   let syntheticList = subjectList.map((item) => (
     <SyntheticPerformance
       onPress={() => {
         navigation.navigate("Performance", {
           concursoSelected: concursoSelected,
-          performanceKey: item.key,
+          subjectKey: item.key,
         });
       }}
     >

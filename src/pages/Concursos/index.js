@@ -5,6 +5,7 @@ import app from "../../services/firebaseConnection";
 import { onValue, ref, getDatabase } from "firebase/database";
 
 import { AuthContext } from "../../contexts/auth";
+import { HomeContext } from "../../contexts/home";
 import { FlatList } from "react-native";
 
 import { Container, List } from "./styles";
@@ -36,6 +37,9 @@ export default function Concursos() {
 
   return (
     <Container>
+      <Text style={{ marginLeft: "5%", marginTop: 30, color: "#FF5C00" }}>
+        Selecione um concurso
+      </Text>
       {items === "" ? (
         <ActivityIndicator color="#FFF" size="large" />
       ) : (

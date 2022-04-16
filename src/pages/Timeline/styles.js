@@ -16,7 +16,7 @@ export const TitleWrapper = styled.View`
 
 export const Step = styled.TouchableOpacity`
   background-color: #121212;
-  width: 90%;
+  width: 100%;
   border-radius: 5px;
   margin-bottom: 20px;
   flex-direction: row;
@@ -55,7 +55,7 @@ export const ModalInput = styled.TextInput.attrs({
   placeholderTextColor: "#fff8",
 })`
   width: 90%;
-  padding: 5px;
+  padding: 10px;
   background-color: #121212;
   margin-top: 20px;
   margin-left: auto;
@@ -66,7 +66,6 @@ export const ModalInput = styled.TextInput.attrs({
 `;
 
 export const ModalButton = styled.TouchableOpacity`
-  width: 30%;
   padding: 10px;
   height: 50px;
   background-color: #3865a8;

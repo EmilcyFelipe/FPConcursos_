@@ -1,5 +1,12 @@
 import React, { useState, useContext } from "react";
-import { View, Text, Keyboard, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -57,40 +64,42 @@ export default function Register() {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Container>
-        <Title>Adicione um concurso</Title>
-        <View style={{ alignItems: "center" }}>
-          <ContentIcon width={200} height={200} />
-        </View>
-        <InputArea>
-          <Input
-            placeholder="Órgão..."
-            value={orgao}
-            onChangeText={(text) => setOrgao(text)}
-          />
+      <ScrollView>
+        <Container>
+          <Title>Adicione um concurso</Title>
+          <View style={{ alignItems: "center" }}>
+            <ContentIcon width={200} height={200} />
+          </View>
+          <InputArea>
+            <Input
+              placeholder="Órgão..."
+              value={orgao}
+              onChangeText={(text) => setOrgao(text)}
+            />
 
-          <Input
-            placeholder="Sigla..."
-            value={sigla}
-            onChangeText={(text) => setSigla(text)}
-          />
+            <Input
+              placeholder="Sigla..."
+              value={sigla}
+              onChangeText={(text) => setSigla(text)}
+            />
 
-          <Input
-            placeholder="Cargo..."
-            value={cargo}
-            onChangeText={(text) => setCargo(text)}
-          />
+            <Input
+              placeholder="Cargo..."
+              value={cargo}
+              onChangeText={(text) => setCargo(text)}
+            />
 
-          <Input
-            placeholder="Banca..."
-            value={banca}
-            onChangeText={(text) => setBanca(text)}
-          />
-        </InputArea>
-        <Submit onPress={() => addConcurso()}>
-          <SubmitText>Adicionar</SubmitText>
-        </Submit>
-      </Container>
+            <Input
+              placeholder="Banca..."
+              value={banca}
+              onChangeText={(text) => setBanca(text)}
+            />
+          </InputArea>
+          <Submit onPress={() => addConcurso()}>
+            <SubmitText>Adicionar</SubmitText>
+          </Submit>
+        </Container>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 }

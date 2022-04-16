@@ -7,10 +7,7 @@ import { AuthContext } from "./auth";
 export const HomeContext = createContext({});
 
 function HomeProvider({ children }) {
-  const { user } = useContext(AuthContext);
-  const [concursoSelected, setConcursoSelected] = useState(
-    "-MuSOuNrA9hV5Xa3Aey3"
-  );
+  const { user, concursoSelected } = useContext(AuthContext);
 
   const [loadingSteps, setLoadingSteps] = useState(true);
   const db = getDatabase(app);
@@ -37,11 +34,15 @@ function HomeProvider({ children }) {
       });
     }
     loadList();
-  }, []);
+  }, [concursoSelected]);
 
   return (
     <HomeContext.Provider
-      value={{ timelineSteps, concursoSelected, loadingSteps }}
+      value={{
+        timelineSteps,
+        concursoSelected,
+        loadingSteps,
+      }}
     >
       {children}
     </HomeContext.Provider>

@@ -25,19 +25,11 @@ export default function TimelineComponent({ data }) {
 
   return (
     <Container>
-      <TouchableOpacity
-        onPress={() => {
-          console.log(activity.current);
-        }}
-      >
-        <Text>olasdf</Text>
-      </TouchableOpacity>
       {timelineSteps === [] ? (
         <Text>Adicione seu Cronograma</Text>
       ) : (
         <TimeLineWrapper
           ref={activity}
-          initialScrollIndex={4}
           horizontal={true}
           data={timelineSteps}
           showsHorizontalScrollIndicator={false}

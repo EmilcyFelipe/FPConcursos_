@@ -8,6 +8,7 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
+  ScrollView,
 } from "react-native";
 
 import app from "../../services/firebaseConnection";
@@ -80,7 +81,7 @@ export default function Timeline({ route }) {
       onLongPress={() => {
         setEditing(true);
         setSelectedStep(item.key);
-        handleAddStep();
+        handleAddStep(item.key);
       }}
     >
       <StepText>{item.etapa}</StepText>
@@ -91,11 +92,11 @@ export default function Timeline({ route }) {
     </Step>
   ));
 
-  function handleAddStep() {
-    if (selectedStep) {
+  function handleAddStep(itemKey) {
+    if (itemKey) {
       const stepRef = ref(
         db,
-        "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
+        "concursos/" + user.uid + "/" + data + "/cronograma/" + itemKey
       );
       onValue(stepRef, (snapshot) => {
         setStepName(snapshot.val().etapa);
@@ -127,6 +128,7 @@ export default function Timeline({ route }) {
         alert(error.message);
       });
   }
+
   function editStep() {
     const stepRef = ref(
       db,
@@ -142,7 +144,7 @@ export default function Timeline({ route }) {
         setInitialDate("");
         setFinalDate("");
         setEditing(false);
-        setSelectedStep();
+        setSelectedStep("");
         setModalVisible(false);
       })
       .catch((error) => {
@@ -190,7 +192,20 @@ export default function Timeline({ route }) {
         >
           <View style={{ flex: 1 }}>
             <ModalContent>
-              <ModalHeadText>Adicionar</ModalHeadText>
+              {selectedStep ? (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginLeft: "5%",
+                  }}
+                >
+                  <FontAwesome name="edit" size={20} color="#AC3F3F" />
+                  <Text style={{ color: "#AC3F3F", fontSize: 20 }}>Editar</Text>
+                </View>
+              ) : (
+                <ModalHeadText>Adicionar</ModalHeadText>
+              )}
               <ModalInput
                 value={stepName}
                 onChangeText={(text) => setStepName(text)}
@@ -255,7 +270,15 @@ export default function Timeline({ route }) {
           <Text style={{ color: "#FFF", fontSize: 20 }}>Adicionar Etapa</Text>
         </TouchableOpacity>
       </TitleWrapper>
-      {timelineItems}
+      <ScrollView
+        style={{ width: "90%" }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          alignItems: "center",
+        }}
+      >
+        {timelineItems}
+      </ScrollView>
     </Container>
   );
 }

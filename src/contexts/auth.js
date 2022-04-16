@@ -19,6 +19,9 @@ function AuthProvider({ children }) {
 
   const auth = getAuth(app);
   const db = getDatabase();
+  const [concursoSelected, setConcursoSelected] = useState(
+    "-MuSOuNrA9hV5Xa3Aey3"
+  );
 
   useEffect(async () => {
     try {
@@ -28,6 +31,14 @@ function AuthProvider({ children }) {
       }
     } catch (e) {
       alert("Error ao carregar usuário");
+    }
+    try {
+      const concursoValue = await AsyncStorage.getItem("@concurso_Selected");
+      if (concursoValue) {
+        setConcursoSelected(concursoValue);
+      }
+    } catch (e) {
+      alert(e.message);
     }
   }, []);
 
@@ -108,7 +119,15 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signUp, signed: !!user, user, signIn, logOut }}
+      value={{
+        signUp,
+        signed: !!user,
+        user,
+        signIn,
+        logOut,
+        concursoSelected,
+        setConcursoSelected,
+      }}
     >
       {children}
     </AuthContext.Provider>

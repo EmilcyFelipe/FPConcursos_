@@ -35,7 +35,7 @@ export default function Header({ data, goBack, concursoSelected }) {
       },
       { onlyOnce: true }
     );
-  }, []);
+  }, [concursoSelected]);
 
   function headerButton() {
     if (goBack) {

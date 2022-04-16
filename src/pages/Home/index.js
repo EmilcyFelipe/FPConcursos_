@@ -24,15 +24,14 @@ import TimelineIcon from "../../assets/timeline.svg";
 import ConteudoIcon from "../../assets/subject.svg";
 import PerformanceIcon from "../../assets/performance.svg";
 
-export default function Home() {
-  const { user } = useContext(AuthContext);
-  const { concursoSelected } = useContext(HomeContext);
+export default function Home(route) {
+  const { user, concursoSelected } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
   const db = getDatabase(app);
 
-  if (concursoSelected === "") {
+  if (!concursoSelected) {
     return (
       <Container>
         <Header />

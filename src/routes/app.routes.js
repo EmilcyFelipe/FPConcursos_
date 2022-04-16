@@ -13,6 +13,7 @@ export default function AppRoutes() {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
+      initialRouteName="HomeRoutes"
       screenOptions={{
         drawerStyle: {
           backgroundColor: "#232323",

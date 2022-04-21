@@ -27,10 +27,10 @@ import { app } from "../../services/firebaseConnection";
 import { set, ref, getDatabase, push } from "firebase/database";
 
 export default function Register() {
-  const [orgao, setOrgao] = useState();
-  const [sigla, setSigla] = useState();
-  const [cargo, setCargo] = useState();
-  const [banca, setBanca] = useState();
+  const [orgao, setOrgao] = useState("");
+  const [sigla, setSigla] = useState("");
+  const [cargo, setCargo] = useState("");
+  const [banca, setBanca] = useState("");
 
   const { user } = useContext(AuthContext);
 
@@ -39,8 +39,11 @@ export default function Register() {
   const db = getDatabase(app);
 
   function addConcurso() {
-    let uid = user.uid;
-    const concursosRef = ref(db, "concursos/" + uid);
+    if (orgao === "" || sigla === "" || cargo === "" || banca === "") {
+      alert("Por favor, preencha todos os campos");
+      return;
+    }
+    const concursosRef = ref(db, "concursos/" + user.uid);
     let key = push(concursosRef);
     set(key, {
       orgao: orgao,
@@ -51,15 +54,16 @@ export default function Register() {
       Subjects: [{}],
       performance: [{}],
     })
-      .then(() => {})
+      .then(() => {
+        setOrgao("");
+        setSigla("");
+        setCargo("");
+        setBanca("");
+        navigation.navigate("Concursos");
+      })
       .catch((error) => {
         alert(error.message);
       });
-    setOrgao("");
-    setSigla("");
-    setCargo("");
-    setBanca("");
-    navigation.navigate("Concursos");
   }
 
   return (

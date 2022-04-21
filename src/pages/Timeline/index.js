@@ -47,14 +47,13 @@ export default function Timeline({ route }) {
   const [selectedStep, setSelectedStep] = useState();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user, concursoSelected } = useContext(AuthContext);
   const db = getDatabase(app);
 
   const [items, setItems] = useState([]);
-  const [data, setData] = useState(route.params.concursoSelected);
   const timelineRef = ref(
     db,
-    "concursos/" + user.uid + "/" + data + "/cronograma"
+    "concursos/" + user.uid + "/" + concursoSelected + "/cronograma"
   );
 
   useEffect(() => {
@@ -96,13 +95,22 @@ export default function Timeline({ route }) {
     if (itemKey) {
       const stepRef = ref(
         db,
-        "concursos/" + user.uid + "/" + data + "/cronograma/" + itemKey
+        "concursos/" +
+          user.uid +
+          "/" +
+          concursoSelected +
+          "/cronograma/" +
+          itemKey
       );
-      onValue(stepRef, (snapshot) => {
-        setStepName(snapshot.val().etapa);
-        setInitialDate(snapshot.val().initialDate);
-        setFinalDate(snapshot.val().finalDate);
-      });
+      onValue(
+        stepRef,
+        (snapshot) => {
+          setStepName(snapshot.val().etapa);
+          setInitialDate(snapshot.val().initialDate);
+          setFinalDate(snapshot.val().finalDate);
+        },
+        { onlyOnce: true }
+      );
     }
     setModalVisible(true);
   }
@@ -132,7 +140,12 @@ export default function Timeline({ route }) {
   function editStep() {
     const stepRef = ref(
       db,
-      "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/cronograma/" +
+        selectedStep
     );
     update(stepRef, {
       etapa: stepName,
@@ -155,7 +168,12 @@ export default function Timeline({ route }) {
   function deleteStep() {
     const stepRef = ref(
       db,
-      "concursos/" + user.uid + "/" + data + "/cronograma/" + selectedStep
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/cronograma/" +
+        selectedStep
     );
     remove(stepRef).then(() => {
       setStepName("");

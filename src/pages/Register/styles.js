@@ -30,12 +30,13 @@ export const Input = styled.TextInput.attrs({
 export const Submit = styled.TouchableOpacity`
   background-color: #3865a8;
   height: 50px;
-  width: 90%;
+  width: 40%;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  margin-left: 5%;
+  margin-left: auto;
+  margin-right: 5%;
 `;
 
 export const SubmitText = styled.Text`

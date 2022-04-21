@@ -11,7 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { HomeContext } from "../../contexts/home";
 import { Container, TimeLineWrapper, StepBox } from "./styles";
 
-export default function TimelineComponent({ data }) {
+export default function TimelineComponent() {
   const { timelineSteps, loadingSteps } = useContext(HomeContext);
   const activity = useRef();
 
@@ -25,8 +25,17 @@ export default function TimelineComponent({ data }) {
 
   return (
     <Container>
-      {timelineSteps === [] ? (
-        <Text>Adicione seu Cronograma</Text>
+      {!timelineSteps ? (
+        <View
+          style={{
+            height: 100,
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ fontSize: 20 }}>
+            Sem cronograma, adicione algumas etapas
+          </Text>
+        </View>
       ) : (
         <TimeLineWrapper
           ref={activity}

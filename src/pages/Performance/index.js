@@ -140,9 +140,9 @@ export default function Performance({ route }) {
             [...new Set(yAxios)].length > 5 ? 5 : [...new Set(yAxios)].length
           }
           chartConfig={{
-            backgroundColor: "BLACK",
-            backgroundGradientFrom: "#3865A8",
-            backgroundGradientTo: "#BDBDBD",
+            backgroundColor: "#e26a00",
+            backgroundGradientFromOpacity: 0,
+            backgroundGradientTo: 0,
             decimalPlaces: 0, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,

@@ -25,12 +25,12 @@ import app from "../../services/firebaseConnection";
 import { AuthContext } from "../../contexts/auth";
 import { HomeContext } from "../../contexts/home";
 
-export default function MenuSubmenu({ data, concursoSelected, subKey }) {
+export default function MenuSubmenu({ data, subKey }) {
   const [showSubs, setShowSubs] = useState(false);
   const [modalSubmenuVisible, setModalSubmenuVisible] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState("");
 
-  const { user } = useContext(AuthContext);
+  const { user, concursoSelected } = useContext(AuthContext);
 
   const db = getDatabase(app);
   var subMenus;
@@ -48,7 +48,8 @@ export default function MenuSubmenu({ data, concursoSelected, subKey }) {
 
   function handleModalSubmenu() {
     setModalSubmenuVisible(true);
-    setSelectedSubject(data);
+    console.log(subKey);
+    setSelectedSubject(subKey);
   }
   function handleDeleteSubject() {
     Alert.alert(
@@ -90,16 +91,16 @@ export default function MenuSubmenu({ data, concursoSelected, subKey }) {
         "/" +
         concursoSelected +
         "/subjects/" +
-        selectedSubject.key +
+        selectedSubject +
         "/matters"
     );
+
     let contentKey = push(contentRef);
     set(contentKey, {
       name: value,
     }).then(() => {
       setModalSubmenuVisible(false);
       Keyboard.dismiss();
-      alert("adicionado");
     });
   }
 

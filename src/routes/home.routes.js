@@ -5,7 +5,6 @@ import DataHome from "../pages/DataHome";
 import Timeline from "../pages/Timeline";
 import Subjects from "../pages/Subjects";
 
-import Performance from "../pages/Performance";
 import PerformanceRoutes from "./performance.routes";
 
 export default function HomeRoutes() {

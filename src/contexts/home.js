@@ -40,7 +40,6 @@ function HomeProvider({ children }) {
     <HomeContext.Provider
       value={{
         timelineSteps,
-        concursoSelected,
         loadingSteps,
       }}
     >

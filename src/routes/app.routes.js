@@ -2,8 +2,8 @@ import React from "react";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import Home from "../pages/Home";
 import Profile from "../pages/Profile";
+import ProfileRoutes from "./profile.routes";
 import Register from "../pages/Register";
 import Concursos from "../pages/Concursos";
 import Timeline from "../pages/Timeline";
@@ -35,15 +35,9 @@ export default function AppRoutes() {
       />
 
       <Drawer.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          headerStyle: {
-            backgroundColor: "#121212",
-          },
-          headerTintColor: "#fff",
-          title: "Perfil",
-        }}
+        name="ProfileRoutes"
+        options={{ headerShown: false, title: "Perfil" }}
+        component={ProfileRoutes}
       />
 
       <Drawer.Screen

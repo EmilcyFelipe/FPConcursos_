@@ -15,10 +15,7 @@ import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import app from "../../services/firebaseConnection";
 
 export default function Subjects({ route }) {
-  const { user } = useContext(AuthContext);
-  const [concursoSelected, setConcursoSelected] = useState(
-    route.params.concursoSelected
-  );
+  const { user, concursoSelected } = useContext(AuthContext);
 
   const db = getDatabase(app);
   const subjectRef = ref(
@@ -70,11 +67,7 @@ export default function Subjects({ route }) {
   }
 
   let subjectMenu = subsObject.map((item) => (
-    <MenuSubmenu
-      data={item}
-      subKey={item.key}
-      concursoSelected={concursoSelected}
-    />
+    <MenuSubmenu data={item} subKey={item.key} />
   ));
   return (
     <Container>

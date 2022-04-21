@@ -1,7 +1,18 @@
-import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 
-import { Container, ExitButton, ExitText, UserInformations } from "./styles";
+import {
+  Container,
+  HeaderProfile,
+  EditButton,
+  EditText,
+  ExitButton,
+  ExitText,
+  UserInformations,
+} from "./styles";
+import { Feather } from "@expo/vector-icons";
+
+import { useNavigation } from "@react-navigation/native";
 
 import { AuthContext } from "../../contexts/auth";
 import FemaleAvatar from "../../assets/female_avatar.svg";
@@ -9,8 +20,21 @@ import MaleAvatar from "../../assets/male_avatar.svg";
 
 export default function Profile() {
   const { logOut, user } = useContext(AuthContext);
+  const navigation = useNavigation();
+  const [name, setName] = useState(user.name);
+
   return (
     <Container>
+      <HeaderProfile>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
+        >
+          <Feather name="menu" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 20, marginLeft: 20 }}>Perfil</Text>
+      </HeaderProfile>
       {user.genrer === "M" ? (
         <MaleAvatar width={200} height={200} />
       ) : (
@@ -19,8 +43,11 @@ export default function Profile() {
       <UserInformations>
         <Text>Nome: {user.name}</Text>
         <Text>Email: {user.email}</Text>
-        <Text>Gênero: {user.name === "M" ? "Masculino" : "Feminino"}</Text>
+        <Text>Gênero: {user.genrer === "M" ? "Masculino" : "Feminino"}</Text>
       </UserInformations>
+      <EditButton onPress={() => navigation.navigate("EditProfile")}>
+        <EditText>Editar</EditText>
+      </EditButton>
       <ExitButton onPress={logOut}>
         <ExitText>Sair</ExitText>
       </ExitButton>

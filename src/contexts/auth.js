@@ -15,13 +15,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState("");
+  const [concursoSelected, setConcursoSelected] = useState();
+
+  useEffect(async () => {
+    if (user) {
+      storageUser(user);
+    }
+  }, [user]);
 
   const auth = getAuth(app);
   const db = getDatabase();
-  const [concursoSelected, setConcursoSelected] = useState(
-    "-MuSOuNrA9hV5Xa3Aey3"
-  );
 
   useEffect(async () => {
     try {
@@ -34,11 +38,24 @@ function AuthProvider({ children }) {
     }
     try {
       const concursoValue = await AsyncStorage.getItem("@concurso_Selected");
-      if (concursoValue) {
+      if (concursoValue !== null) {
         setConcursoSelected(concursoValue);
+      } else {
+        let concursosRef = ref(db, "concursos/" + user.uid);
+        onValue(
+          concursosRef,
+          (snapshot) => {
+            if (snapshot.exists()) {
+              Object.keys(snapshot.val()).length > 0
+                ? setConcursoSelected(Object.keys(snapshot.val())[0])
+                : setConcursoSelected();
+            }
+          },
+          { onlyOnce: true }
+        );
       }
     } catch (e) {
-      alert(e.message);
+      alert(e.message + "1");
     }
   }, []);
 
@@ -63,7 +80,7 @@ function AuthProvider({ children }) {
         );
       })
       .catch((error) => {
-        alert(error.message);
+        alert(error.message + "2");
       });
   }
 
@@ -89,7 +106,7 @@ function AuthProvider({ children }) {
             storageUser(data);
           })
           .catch((error) => {
-            alert(error.message);
+            alert(error.message + "3");
           });
       })
       .catch((error) => {
@@ -102,10 +119,11 @@ function AuthProvider({ children }) {
       .then(() => {
         setUser(null);
         storageUser("");
+        storageConcursoSelected("");
         alert("usuário deslogado");
       })
       .catch((error) => {
-        alert(error.message);
+        alert(error.message + "4");
       });
   }
 
@@ -113,7 +131,21 @@ function AuthProvider({ children }) {
     try {
       await AsyncStorage.setItem("Auth_user", JSON.stringify(data));
     } catch (error) {
-      alert(error.message);
+      alert(error.message + "5");
+    }
+  }
+
+  async function storageConcursoSelected(data) {
+    try {
+      if (data === null || data === undefined) {
+        await AsyncStorage.removeItem("@concurso_Selected", () => {
+          alert("removido");
+        });
+      } else {
+        await AsyncStorage.setItem("@concurso_Selected", JSON.stringify(data));
+      }
+    } catch (error) {
+      alert(error.message + "6");
     }
   }
 
@@ -123,6 +155,9 @@ function AuthProvider({ children }) {
         signUp,
         signed: !!user,
         user,
+        setUser,
+        storageUser,
+        storageConcursoSelected,
         signIn,
         logOut,
         concursoSelected,

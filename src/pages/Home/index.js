@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import HomeProvider from "../../contexts/home";
 import { View, Text, TouchableOpacity } from "react-native";
 
 import {
@@ -14,23 +13,21 @@ import Header from "../../components/Header";
 import TimelineComponent from "../../components/TimelineComponent";
 
 import { AuthContext } from "../../contexts/auth";
-import { HomeContext } from "../../contexts/home";
 
 import { useNavigation } from "@react-navigation/native";
-import app from "../../services/firebaseConnection";
-import { getDatabase, ref, onValue } from "firebase/database";
 
 import TimelineIcon from "../../assets/timeline.svg";
 import ConteudoIcon from "../../assets/subject.svg";
 import PerformanceIcon from "../../assets/performance.svg";
 
-export default function Home(route) {
+export default function Home() {
   const { user, concursoSelected } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
-  const db = getDatabase(app);
-
+  useEffect(() => {
+    console.log(concursoSelected + "oa");
+  }, []);
   if (!concursoSelected) {
     return (
       <Container>
@@ -42,7 +39,7 @@ export default function Home(route) {
           }}
         >
           <Text style={{ color: "#FFF", fontSize: 25 }}>
-            Registre um concurso aqui
+            Selecione ou adicione um concurso
           </Text>
         </TouchableOpacity>
       </Container>

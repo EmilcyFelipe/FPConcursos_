@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import DatePicker from "react-native-datepicker";
 
 import {
   View,
@@ -56,6 +57,16 @@ export default function Timeline({ route }) {
     "concursos/" + user.uid + "/" + concursoSelected + "/cronograma"
   );
 
+  function formatDate(date) {
+    return (
+      date.getFullYear() +
+      "-" +
+      0 +
+      (date.getMonth() + 1) +
+      "-" +
+      (date.getDate() + 1)
+    );
+  }
   useEffect(() => {
     async function loadList() {
       onValue(timelineRef, (snapshot) => {
@@ -64,8 +75,8 @@ export default function Timeline({ route }) {
           let timeItem = {
             key: childItem.key,
             etapa: childItem.val().etapa,
-            initialDate: childItem.val().initialDate,
-            finalDate: childItem.val().finalDate,
+            initialDate: formatDate(new Date(childItem.val().initialDate)),
+            finalDate: formatDate(new Date(childItem.val().finalDate)),
           };
           setItems((oldArray) => [...oldArray, timeItem]);
         });
@@ -92,6 +103,7 @@ export default function Timeline({ route }) {
   ));
 
   function handleAddStep(itemKey) {
+    // condition to set edit mode
     if (itemKey) {
       const stepRef = ref(
         db,
@@ -106,8 +118,8 @@ export default function Timeline({ route }) {
         stepRef,
         (snapshot) => {
           setStepName(snapshot.val().etapa);
-          setInitialDate(snapshot.val().initialDate);
-          setFinalDate(snapshot.val().finalDate);
+          setInitialDate(formatDate(new Date(snapshot.val().initialDate)));
+          setFinalDate(formatDate(new Date(snapshot.val().finalDate)));
         },
         { onlyOnce: true }
       );
@@ -116,15 +128,19 @@ export default function Timeline({ route }) {
   }
 
   function addStep() {
-    if (stepName === "" || initialDate === "") {
+    if (stepName === "" || initialDate === "" || finalDate === "") {
       alert("Por favor, insira todos os dados");
+      return;
+    }
+    if (Date.parse(initialDate) > Date.parse(finalDate)) {
+      alert("A data final deve ser igual ou posterior a data inicial!");
       return;
     }
     const stepKey = push(timelineRef);
     set(stepKey, {
       etapa: stepName,
-      initialDate: initialDate,
-      finalDate: finalDate,
+      initialDate: Date.parse(initialDate),
+      finalDate: Date.parse(finalDate),
     })
       .then(() => {
         setStepName("");
@@ -149,8 +165,8 @@ export default function Timeline({ route }) {
     );
     update(stepRef, {
       etapa: stepName,
-      initialDate: initialDate,
-      finalDate: finalDate,
+      initialDate: Date.parse(initialDate),
+      finalDate: Date.parse(finalDate),
     })
       .then(() => {
         setStepName("");
@@ -182,7 +198,7 @@ export default function Timeline({ route }) {
       setEditing(false);
       setSelectedStep();
       setModalVisible(false);
-      alert("Etapa ecluída com sucesso");
+      alert("Etapa excluída com sucesso");
     });
   }
 
@@ -199,6 +215,9 @@ export default function Timeline({ route }) {
     alert("Para editar ou deletar uma etapa, mantenha pressionado o elemento");
   }
 
+  useEffect(() => {
+    console.log(Date.parse(new Date()));
+  }, []);
   return (
     <Container>
       <Header goBack={true} concursoSelected={route.params.concursoSelected} />
@@ -229,15 +248,74 @@ export default function Timeline({ route }) {
                 onChangeText={(text) => setStepName(text)}
                 placeholder="Nome da fase"
               />
-              <ModalInput
-                value={initialDate}
-                onChangeText={(text) => setInitialDate(text)}
-                placeholder='Data Inicial. Ex: "dd/MM/YYYY"'
+              <DatePicker
+                style={{
+                  width: "90%",
+                  marginTop: 10,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+                date={initialDate}
+                mode="date"
+                placeholder="Data Inicial"
+                format="YYYY-MM-DD"
+                minDate="2010-05-01"
+                maxDate="2030-05-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateText: {
+                    color: "#FF5C00",
+                  },
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    tintColor: "#FF5C00",
+                  },
+                  dateInput: {
+                    marginLeft: 36,
+                  },
+                }}
+                onDateChange={(date) => {
+                  setInitialDate(date);
+                }}
               />
-              <ModalInput
-                value={finalDate}
-                onChangeText={(text) => setFinalDate(text)}
-                placeholder='Data Final. Ex: "dd/MM/YYYY"'
+
+              <DatePicker
+                style={{
+                  width: "90%",
+                  marginTop: 10,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+                date={finalDate}
+                mode="date"
+                placeholder="Data Final"
+                format="YYYY-MM-DD"
+                minDate="2010-05-01"
+                maxDate="2030-05-01"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateText: {
+                    color: "#8DB8F8",
+                  },
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                    tintColor: "#8DB8F8",
+                  },
+                  dateInput: {
+                    marginLeft: 36,
+                  },
+                }}
+                onDateChange={(date) => {
+                  setFinalDate(date);
+                }}
               />
               <View
                 style={{
@@ -248,16 +326,16 @@ export default function Timeline({ route }) {
                   marginRight: "auto",
                 }}
               >
-                <ModalButton onPress={editing ? editStep : addStep}>
-                  <Text style={{ color: "#FFF" }}>
-                    {editing ? "Editar" : "Adicionar"}
-                  </Text>
-                </ModalButton>
                 <ModalButton
                   style={{ backgroundColor: "#AC3F3F" }}
                   onPress={cancelAddStep}
                 >
                   <Text style={{ color: "#FFF" }}>Cancelar</Text>
+                </ModalButton>
+                <ModalButton onPress={editing ? editStep : addStep}>
+                  <Text style={{ color: "#FFF" }}>
+                    {editing ? "Editar" : "Adicionar"}
+                  </Text>
                 </ModalButton>
                 {editing && (
                   <ModalButton

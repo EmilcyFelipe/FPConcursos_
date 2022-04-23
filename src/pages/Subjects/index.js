@@ -67,7 +67,7 @@ export default function Subjects({ route }) {
   }
 
   let subjectMenu = subsObject.map((item) => (
-    <MenuSubmenu data={item} subKey={item.key} />
+    <MenuSubmenu key={item.key} data={item} subKey={item.key} />
   ));
   return (
     <Container>

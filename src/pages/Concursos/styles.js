@@ -5,9 +5,14 @@ export const Container = styled.View`
   background-color: #1c1c1c;
 `;
 
+export const ActionToRegister = styled.TouchableOpacity`
+  margin-right: 5%;
+  margin-left: auto;
+  margin-top: 30px;
+`;
+
 export const List = styled.FlatList`
   width: 90%;
-  margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
 `;

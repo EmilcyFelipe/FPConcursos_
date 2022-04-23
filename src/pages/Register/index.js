@@ -68,7 +68,7 @@ export default function Register() {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "#1C1C1C" }}>
         <Container>
           <Title>Adicione um concurso</Title>
           <View style={{ alignItems: "center" }}>

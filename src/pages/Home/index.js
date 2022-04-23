@@ -12,6 +12,8 @@ import {
 import Header from "../../components/Header";
 import TimelineComponent from "../../components/TimelineComponent";
 
+import { AntDesign } from "@expo/vector-icons";
+
 import { AuthContext } from "../../contexts/auth";
 
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import TimelineIcon from "../../assets/timeline.svg";
 import ConteudoIcon from "../../assets/subject.svg";
 import PerformanceIcon from "../../assets/performance.svg";
+import Pick from "../../assets/pick.svg";
 
 export default function Home() {
   const { user, concursoSelected } = useContext(AuthContext);
@@ -33,14 +36,32 @@ export default function Home() {
       <Container>
         <Header />
         <TouchableOpacity
-          style={{ alignItems: "center", justifyContent: "center" }}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: "auto",
+            marginBottom: "auto",
+          }}
           onPress={() => {
-            navigation.navigate("Register");
+            navigation.navigate("Concursos");
           }}
         >
-          <Text style={{ color: "#FFF", fontSize: 25 }}>
-            Selecione ou adicione um concurso
-          </Text>
+          <View
+            style={{
+              borderColor: "#ffff",
+              borderWidth: 3,
+              borderStyle: "solid",
+              borderRadius: 20,
+              padding: 10,
+              margin: "5%",
+            }}
+          >
+            <Text style={{ color: "#FFF", fontSize: 20 }}>
+              Selecione ou adicione um concurso.
+            </Text>
+            <AntDesign name="select1" size={24} color="#FFF" />
+          </View>
+          <Pick height={200} />
         </TouchableOpacity>
       </Container>
     );

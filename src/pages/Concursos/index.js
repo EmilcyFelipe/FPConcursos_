@@ -1,22 +1,23 @@
 import React, { useEffect, useContext, useState } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
+import { Text, ActivityIndicator, TouchableOpacity } from "react-native";
+import { Container, List, ActionToRegister } from "./styles";
 
 import app from "../../services/firebaseConnection";
 import { onValue, ref, getDatabase } from "firebase/database";
 
 import { AuthContext } from "../../contexts/auth";
-import { HomeContext } from "../../contexts/home";
-import { FlatList } from "react-native";
-
-import { Container, List } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
 import ConcItem from "../../components/ConcItem";
+
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Concursos() {
   const [items, setItems] = useState("");
 
   const { user } = useContext(AuthContext);
   const uid = user.uid;
+  const navigation = useNavigation();
 
   const db = getDatabase(app);
 
@@ -40,6 +41,13 @@ export default function Concursos() {
       <Text style={{ marginLeft: "5%", marginTop: 30, color: "#FF5C00" }}>
         Selecione um concurso
       </Text>
+      <ActionToRegister
+        onPress={() => navigation.navigate("Register")}
+        style={{ flexDirection: "row" }}
+      >
+        <Text style={{ marginRight: 10 }}>Registrar novo concurso</Text>
+        <Ionicons name="add-circle-outline" size={24} color="black" />
+      </ActionToRegister>
       {items === "" ? (
         <ActivityIndicator color="#FFF" size="large" />
       ) : (

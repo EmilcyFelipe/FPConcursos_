@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.ScrollView`
   flex: 1;
   padding-top: 30px;
+  background-color: #1c1c1c;
 `;
 
 export const Title = styled.Text`

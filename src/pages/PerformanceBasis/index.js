@@ -50,6 +50,7 @@ export default function PerformanceBasis({ route }) {
           subjectKey: item.key,
         });
       }}
+      key={item.key}
     >
       <Text style={{ color: "#FFF", fontSize: 20 }}>{item.name}</Text>
       <Text style={{ color: "#FF8A00", fontSize: 20 }}>{item.performance}</Text>

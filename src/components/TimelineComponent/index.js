@@ -31,6 +31,7 @@ export default function TimelineComponent() {
 
   function stepColor(step) {
     let currentDate = Date.parse(new Date());
+    console.log(currentDate);
     if (step.initialDate < currentDate) {
       if (step.finalDate < currentDate) {
         return "#FFF";

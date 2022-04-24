@@ -32,10 +32,22 @@ export default function PerformanceBasis({ route }) {
     onValue(subjectRef, (snapshot) => {
       setSubjectList([]);
       snapshot.forEach((childItem) => {
+        let performanceValue = 0;
+        let performanceLength = 1;
+        if (childItem.child("performance").exists()) {
+          performanceLength = Object.keys(
+            childItem.child("performance").val()
+          ).length;
+        }
+        childItem.child("performance").forEach((grandChildItem) => {
+          performanceValue += parseInt(grandChildItem.val().value);
+        });
         let item = {
           key: childItem.key,
           name: childItem.val().name,
-          performance: "90/100",
+          performance: `${(performanceValue / performanceLength).toFixed(
+            1
+          )}/100`,
         };
         setSubjectList((oldList) => [...oldList, item]);
       });

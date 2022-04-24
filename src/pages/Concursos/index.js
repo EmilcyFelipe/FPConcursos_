@@ -45,8 +45,10 @@ export default function Concursos() {
         onPress={() => navigation.navigate("Register")}
         style={{ flexDirection: "row" }}
       >
-        <Text style={{ marginRight: 10 }}>Registrar novo concurso</Text>
-        <Ionicons name="add-circle-outline" size={24} color="black" />
+        <Text style={{ marginRight: 10, color: "#fff" }}>
+          Registrar novo concurso
+        </Text>
+        <Ionicons name="add-circle-outline" size={24} color="#fff" />
       </ActionToRegister>
       {items === "" ? (
         <ActivityIndicator color="#FFF" size="large" />

@@ -28,6 +28,7 @@ export const EditButton = styled.TouchableOpacity`
 
 export const EditText = styled.Text`
   font-size: 20px;
+  color: #fff;
 `;
 
 export const ExitButton = styled.TouchableOpacity`

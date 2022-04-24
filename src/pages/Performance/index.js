@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, TouchableOpacity, Modal, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  Dimensions,
+  Alert,
+} from "react-native";
 
 import { AuthContext } from "../../contexts/auth";
 
@@ -7,7 +14,14 @@ import Header from "../../components/Header";
 import { Container, Historic, TitleWrapper, PerformanceChart } from "./styles";
 import ModalHistoric from "../../components/ModalHistoric";
 
-import { getDatabase, onValue, ref, push, set } from "firebase/database";
+import {
+  getDatabase,
+  onValue,
+  ref,
+  push,
+  set,
+  remove,
+} from "firebase/database";
 import app from "../../services/firebaseConnection";
 
 import { LineChart } from "react-native-chart-kit";
@@ -30,24 +44,21 @@ export default function Performance({ route }) {
   );
 
   useEffect(() => {
-    onValue(
-      subjectRef,
-      (snapshot) => {
-        setHistoric([]);
-        let perforObj = snapshot.val().performance;
-        if (perforObj) {
-          Object.keys(perforObj).forEach((item) => {
-            let perforItem = {
-              value: perforObj[item].value,
-              id: perforObj[item].id,
-            };
-            setHistoric((oldList) => [...oldList, perforItem]);
-          });
-        }
-        setSubjectData(snapshot.val());
-      },
-      { onlyOnce: true }
-    );
+    onValue(subjectRef, (snapshot) => {
+      setHistoric([]);
+      let perforObj = snapshot.val().performance;
+      if (perforObj) {
+        Object.keys(perforObj).forEach((item) => {
+          let perforItem = {
+            value: perforObj[item].value,
+            id: perforObj[item].id,
+            key: item,
+          };
+          setHistoric((oldList) => [...oldList, perforItem]);
+        });
+      }
+      setSubjectData(snapshot.val());
+    });
   }, []);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -84,10 +95,40 @@ export default function Performance({ route }) {
     setModalVisible(false);
   }
 
+  function handleDelete(itemKey) {
+    Alert.alert("Deseja excluir esse item?", "Essa ação não é reversível!", [
+      {
+        text: "Confirmar",
+        style: "default",
+        onPress: () => {
+          deleteHistoricItem(itemKey);
+        },
+      },
+      {
+        text: "Cancelar",
+        style: "cancel",
+        onPress: () => {},
+      },
+    ]);
+  }
+
+  function deleteHistoricItem(itemKey) {
+    let historicItemRef = ref(
+      db,
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/subjects/" +
+        subjectKey +
+        "/performance/" +
+        itemKey
+    );
+    remove(historicItemRef);
+  }
+
   let xAxios = historic.map((item) => item.id);
   let yAxios = historic.map((item) => item.value);
-
-  console.log(typeof yAxios[0]);
 
   return (
     <Container>
@@ -96,7 +137,10 @@ export default function Performance({ route }) {
       </Modal>
       <Header goBack={true} concursoSelected={route.params.concursoSelected} />
       <TitleWrapper>
-        <Text style={{ color: "#3865A8", fontSize: 20 }}>
+        <Text
+          onPress={() => deleteHistoricItem("-N-ZmBJTkK_UKXrd5Lil")}
+          style={{ color: "#3865A8", fontSize: 20 }}
+        >
           {subjectData.name}
         </Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -107,13 +151,23 @@ export default function Performance({ route }) {
         <Text style={{ fontSize: 18, color: "#fff" }}>Histórico</Text>
         <FlatList
           data={historic}
+          ItemSeparatorComponent={() => {
+            return (
+              <View
+                style={{ width: "100%", height: 2, backgroundColor: "#8DB8F8" }}
+              ></View>
+            );
+          }}
           renderItem={({ item }) => (
-            <View
+            <TouchableOpacity
+              onLongPress={() => {
+                handleDelete(item.key);
+              }}
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "#fff" }}>{item.id}</Text>
               <Text style={{ color: "#fff" }}>{item.value}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </Historic>
@@ -136,16 +190,17 @@ export default function Performance({ route }) {
           yAxisSuffix="/100"
           fromZero={true}
           verticalLabelRotation={65}
+          getDotColor={() => "red"}
           segments={
             [...new Set(yAxios)].length > 5 ? 5 : [...new Set(yAxios)].length
           }
           chartConfig={{
-            backgroundColor: "#e26a00",
-            backgroundGradientFromOpacity: 0,
-            backgroundGradientTo: 0,
+            backgroundColor: "#8DB8F8",
+            backgroundGradientFrom: "#8DB8F8",
+            backgroundGradientTo: "#8DB8F8",
             decimalPlaces: 0, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: () => `#fff`,
+            labelColor: () => `#fff`,
             style: {
               borderRadius: 16,
             },

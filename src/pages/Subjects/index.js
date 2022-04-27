@@ -73,6 +73,30 @@ export default function Subjects({ route }) {
     Keyboard.dismiss();
   }
 
+  const [modalSubmenuVisible, setModalSubmenuVisible] = useState(false);
+  const [selectedSubject, setSelectedSubject] = useState("");
+
+  function addContent(value) {
+    const contentRef = ref(
+      db,
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/subjects/" +
+        selectedSubject +
+        "/matters"
+    );
+
+    let contentKey = push(contentRef);
+    set(contentKey, {
+      name: value,
+    }).then(() => {
+      setModalSubmenuVisible(false);
+      Keyboard.dismiss();
+    });
+  }
+
   return (
     <Container>
       <Modal
@@ -81,6 +105,17 @@ export default function Subjects({ route }) {
         visible={modalSubjectVisible}
       >
         <ModalSubject shows={setModalSubjectVisible} addSubject={addSubject} />
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalSubmenuVisible}
+      >
+        <ModalSubmenu
+          showModalSubmenu={setModalSubmenuVisible}
+          addContent={addContent}
+          selectedSubject={selectedSubject}
+        ></ModalSubmenu>
       </Modal>
       <Header goBack={true} concursoSelected={concursoSelected} />
       <TitleWrapper>
@@ -98,7 +133,13 @@ export default function Subjects({ route }) {
         showsVerticalScrollIndicator={false}
         data={subsObject}
         renderItem={({ item }) => (
-          <MenuSubmenu key={item.key} data={item} subKey={item.key} />
+          <MenuSubmenu
+            key={item.key}
+            showModalSubmenu={setModalSubmenuVisible}
+            setSelectedSubject={setSelectedSubject}
+            data={item}
+            subKey={item.key}
+          />
         )}
       />
     </Container>

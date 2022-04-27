@@ -39,12 +39,12 @@ export default function TimelineComponent() {
     );
     if (step.initialDate <= currentDate) {
       if (step.finalDate < currentDate) {
-        return "#FFF";
+        return "#505050";
       } else {
         return "#FF5C00";
       }
     } else {
-      return "#8DB8F8";
+      return "#FFF";
     }
   }
 
@@ -100,8 +100,8 @@ export default function TimelineComponent() {
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <MaterialIcons name="label-important" size={12} color="#fff" />
-          <Text style={{ color: "#FFF", marginLeft: 5, fontSize: 10 }}>
+          <MaterialIcons name="label-important" size={12} color="#505050" />
+          <Text style={{ color: "#505050", marginLeft: 5, fontSize: 10 }}>
             Decorrido
           </Text>
         </View>
@@ -112,8 +112,8 @@ export default function TimelineComponent() {
           </Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <MaterialIcons name="label-important" size={12} color="#8DB8F8" />
-          <Text style={{ color: "#8DB8F8", marginLeft: 5, fontSize: 10 }}>
+          <MaterialIcons name="label-important" size={12} color="#FFF" />
+          <Text style={{ color: "#FFF", marginLeft: 5, fontSize: 10 }}>
             A incorrer
           </Text>
         </View>

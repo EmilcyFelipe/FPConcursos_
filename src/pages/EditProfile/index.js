@@ -7,7 +7,6 @@ import { AuthContext } from "../../contexts/auth";
 import app from "../../services/firebaseConnection";
 import { getDatabase, onValue, ref, update } from "firebase/database";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function EditProfile() {
   const { user, setUser, storageUser } = useContext(AuthContext);
@@ -32,9 +31,6 @@ export default function EditProfile() {
       }
     }
   }
-  useEffect(() => {
-    console.log(user.genrer);
-  }, [user]);
 
   return (
     <Container>

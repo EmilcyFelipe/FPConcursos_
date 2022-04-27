@@ -17,15 +17,19 @@ export default function Header({ goBack }) {
   const [concursoSigla, setConcursoSigla] = useState();
   useEffect(() => {
     let concursoRef = ref(db, "concursos/" + user.uid + "/" + concursoSelected);
-    onValue(concursoRef, (snapshot) => {
-      if (snapshot.exists()) {
-        setConcursoCargo(snapshot.val().cargo);
-        setConcursoSigla(snapshot.val().sigla);
-      } else {
-        setConcursoCargo("Selecione um concurso");
-        setConcursoSigla("");
-      }
-    });
+    onValue(
+      concursoRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setConcursoCargo(snapshot.val().cargo);
+          setConcursoSigla(snapshot.val().sigla);
+        } else {
+          setConcursoCargo("Selecione um concurso");
+          setConcursoSigla("");
+        }
+      },
+      { onlyOnce: true }
+    );
   }, [concursoSelected]);
 
   function headerButton() {

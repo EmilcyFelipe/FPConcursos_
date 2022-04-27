@@ -21,7 +21,6 @@ import MaleAvatar from "../../assets/male_avatar.svg";
 export default function Profile() {
   const { logOut, user } = useContext(AuthContext);
   const navigation = useNavigation();
-  const [name, setName] = useState(user.name);
 
   return (
     <Container>

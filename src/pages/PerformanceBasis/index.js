@@ -68,9 +68,32 @@ export default function PerformanceBasis({ route }) {
       }}
       key={item.key}
     >
-      <Text style={{ color: "#FFF", fontSize: 20 }}>{item.name}</Text>
-      <Text style={{ color: "#FF8A00", fontSize: 20 }}>{item.performance}</Text>
-      <MaterialIcons name="chevron-right" size={28} color="#fff" />
+      <Text
+        numberOfLines={1}
+        style={{
+          color: "#FFF",
+          fontSize: 20,
+          maxWidth: "65%",
+        }}
+      >
+        {item.name}
+      </Text>
+      <Text
+        style={{
+          color: "#FF8A00",
+          fontSize: 20,
+          marginLeft: "auto",
+          marginRight: 0,
+        }}
+      >
+        {item.performance}
+      </Text>
+      <MaterialIcons
+        style={{ marginRight: 0 }}
+        name="chevron-right"
+        size={28}
+        color="#fff"
+      />
     </SyntheticPerformance>
   ));
 

@@ -25,10 +25,13 @@ import app from "../../services/firebaseConnection";
 import { AuthContext } from "../../contexts/auth";
 import { HomeContext } from "../../contexts/home";
 
-export default function MenuSubmenu({ data, subKey }) {
+export default function MenuSubmenu({
+  data,
+  subKey,
+  showModalSubmenu,
+  setSelectedSubject,
+}) {
   const [showSubs, setShowSubs] = useState(false);
-  const [modalSubmenuVisible, setModalSubmenuVisible] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState("");
 
   const { user, concursoSelected } = useContext(AuthContext);
 
@@ -46,11 +49,6 @@ export default function MenuSubmenu({ data, subKey }) {
     ));
   }
 
-  function handleModalSubmenu() {
-    setModalSubmenuVisible(true);
-    console.log(subKey);
-    setSelectedSubject(subKey);
-  }
   function handleDeleteSubject() {
     Alert.alert(
       `Tem certeza que deseja excluir o conteúdo de ${data.name}?`,
@@ -81,30 +79,6 @@ export default function MenuSubmenu({ data, subKey }) {
       .catch((err) => {
         alert("Ops, algo inesperado aconteceu");
       });
-  }
-
-  function addContent(value) {
-    console.log(user.uid);
-    console.log(concursoSelected);
-    console.log(selectedSubject + "as");
-    const contentRef = ref(
-      db,
-      "concursos/" +
-        user.uid +
-        "/" +
-        concursoSelected +
-        "/subjects/" +
-        selectedSubject +
-        "/matters"
-    );
-
-    let contentKey = push(contentRef);
-    set(contentKey, {
-      name: value,
-    }).then(() => {
-      setModalSubmenuVisible(false);
-      Keyboard.dismiss();
-    });
   }
 
   function handleDeleteContent(key, name) {
@@ -141,19 +115,12 @@ export default function MenuSubmenu({ data, subKey }) {
     );
     remove(contentRef);
   }
+  function handleAdd() {
+    setSelectedSubject(subKey);
+    showModalSubmenu(true);
+  }
   return (
     <Container>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalSubmenuVisible}
-      >
-        <ModalSubmenu
-          showModalSubmenu={setModalSubmenuVisible}
-          addContent={addContent}
-          selectedSubject={selectedSubject}
-        ></ModalSubmenu>
-      </Modal>
       <MainMenu
         onPress={() => setShowSubs(!showSubs)}
         onLongPress={handleDeleteSubject}
@@ -167,11 +134,7 @@ export default function MenuSubmenu({ data, subKey }) {
       </MainMenu>
       {showSubs && (
         <View>
-          <TouchableOpacity
-            onPress={() => {
-              handleModalSubmenu();
-            }}
-          >
+          <TouchableOpacity onPress={handleAdd}>
             <Text style={{ color: "#FFF", marginLeft: "auto", marginRight: 0 }}>
               Inserir
             </Text>

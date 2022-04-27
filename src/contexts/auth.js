@@ -39,7 +39,6 @@ function AuthProvider({ children }) {
     try {
       const concursoValue = await AsyncStorage.getItem("@concurso_Selected");
       if (concursoValue !== null) {
-        console.log("caiu");
         setConcursoSelected(concursoValue);
       } else {
         let concursosRef = ref(db, "concursos/" + user.uid);
@@ -140,7 +139,7 @@ function AuthProvider({ children }) {
     try {
       if (data === null || data === undefined || data === "") {
         await AsyncStorage.removeItem("@concurso_Selected", () => {
-          alert("removido");
+          alert("usuário deslogado");
           setConcursoSelected("");
         });
       } else {

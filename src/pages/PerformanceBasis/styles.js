@@ -7,11 +7,11 @@ export const Container = styled.View`
 `;
 
 export const TitleWrapper = styled.View`
-  flex-direction: row;
   width: 90%;
+  margin-top: 20px;
 `;
 
-export const ListWrapper = styled.View`
+export const ListWrapper = styled.ScrollView`
   width: 90%;
 `;
 

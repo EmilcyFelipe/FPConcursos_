@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import ConcItem from "../../components/ConcItem";
 
 import { Ionicons } from "@expo/vector-icons";
+import ContentsIcon from "../../assets/contents.svg";
 
 export default function Concursos() {
   const [items, setItems] = useState("");
@@ -41,6 +42,11 @@ export default function Concursos() {
       <Text style={{ marginLeft: "5%", marginTop: 30, color: "#FF5C00" }}>
         Selecione um concurso
       </Text>
+      <ContentsIcon
+        width={200}
+        height={200}
+        style={{ marginLeft: "auto", marginRight: "auto" }}
+      />
       <ActionToRegister
         onPress={() => navigation.navigate("Register")}
         style={{ flexDirection: "row" }}

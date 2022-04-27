@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, TouchableOpacity, Modal, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Modal,
+  Keyboard,
+  FlatList,
+} from "react-native";
 
 import { Container, TitleWrapper } from "./styles";
 
@@ -61,14 +68,11 @@ export default function Subjects({ route }) {
     set(subjectKey, {
       name: value,
     });
-    setSubsObject([...subsObject, { key: subjectKey, name: value }]);
+    setSubsObject([...subsObject, { key: subjectKey.key, name: value }]);
     setModalSubjectVisible(false);
     Keyboard.dismiss();
   }
 
-  let subjectMenu = subsObject.map((item) => (
-    <MenuSubmenu key={item.key} data={item} subKey={item.key} />
-  ));
   return (
     <Container>
       <Modal
@@ -87,7 +91,16 @@ export default function Subjects({ route }) {
           <Text style={{ color: "#fff", fontSize: 18 }}>Adicionar</Text>
         </TouchableOpacity>
       </TitleWrapper>
-      {subjectMenu}
+      <FlatList
+        style={{
+          width: "90%",
+        }}
+        showsVerticalScrollIndicator={false}
+        data={subsObject}
+        renderItem={({ item }) => (
+          <MenuSubmenu key={item.key} data={item} subKey={item.key} />
+        )}
+      />
     </Container>
   );
 }

@@ -83,7 +83,10 @@ export default function MenuSubmenu({ data, subKey }) {
       });
   }
 
-  function addContent(subject, value) {
+  function addContent(value) {
+    console.log(user.uid);
+    console.log(concursoSelected);
+    console.log(selectedSubject + "as");
     const contentRef = ref(
       db,
       "concursos/" +

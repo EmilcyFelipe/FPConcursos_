@@ -50,11 +50,13 @@ export default function SignIn() {
           <Input
             placeholder="E-mail"
             value={email}
+            autoCapitalize="none"
             onChangeText={(text) => setEmail(text)}
           />
           <Input
             placeholder="Password"
             value={password}
+            secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
           />
           <Submit onPress={() => signIn(email, password)}>
@@ -67,6 +69,9 @@ export default function SignIn() {
           }}
         >
           <LinkText>Criar uma conta</LinkText>
+        </Link>
+        <Link onPress={() => navigation.navigate("ForgottenPass")}>
+          <LinkText>Esqueci minha senha</LinkText>
         </Link>
       </Container>
     </TouchableWithoutFeedback>

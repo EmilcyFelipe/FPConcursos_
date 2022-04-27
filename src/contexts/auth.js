@@ -39,6 +39,7 @@ function AuthProvider({ children }) {
     try {
       const concursoValue = await AsyncStorage.getItem("@concurso_Selected");
       if (concursoValue !== null) {
+        console.log("caiu");
         setConcursoSelected(concursoValue);
       } else {
         let concursosRef = ref(db, "concursos/" + user.uid);
@@ -110,7 +111,7 @@ function AuthProvider({ children }) {
           });
       })
       .catch((error) => {
-        console.log(error.message);
+        alert(error.message);
       });
   }
 
@@ -137,9 +138,10 @@ function AuthProvider({ children }) {
 
   async function storageConcursoSelected(data) {
     try {
-      if (data === null || data === undefined) {
+      if (data === null || data === undefined || data === "") {
         await AsyncStorage.removeItem("@concurso_Selected", () => {
           alert("removido");
+          setConcursoSelected("");
         });
       } else {
         await AsyncStorage.setItem("@concurso_Selected", JSON.stringify(data));

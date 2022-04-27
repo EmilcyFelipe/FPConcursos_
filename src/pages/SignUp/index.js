@@ -55,6 +55,7 @@ export default function SignUp() {
           />
           <Input
             placeholder="E-mail"
+            autoCapitalize="none"
             value={email}
             onChangeText={(text) => {
               setEmail(text);
@@ -62,6 +63,7 @@ export default function SignUp() {
           />
           <Input
             placeholder="Password"
+            secureTextEntry={true}
             value={password}
             onChangeText={(text) => {
               setPassword(text);

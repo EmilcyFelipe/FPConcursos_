@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
 export const Container = styled.View`
-  width: 90%;
+  width: 100%;
   margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 export const MainMenu = styled.TouchableOpacity`
   width: 100%;
   padding: 20px;
-  background-color: #121212;
   flex-direction: row;
+  background-color: #121212;
   justify-content: space-between;
 `;
 

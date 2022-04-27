@@ -17,7 +17,7 @@ export default function ModalSubmenu({
   const [contentValue, setContentValue] = useState("");
   function handleAddContent() {
     if (contentValue) {
-      addContent(selectedSubject, contentValue);
+      addContent(contentValue);
       setContentValue("");
     }
   }

@@ -51,6 +51,7 @@ export default function Performance({ route }) {
         Object.keys(perforObj).forEach((item) => {
           let perforItem = {
             value: perforObj[item].value,
+            total: perforObj[item].total,
             id: perforObj[item].id,
             key: item,
           };
@@ -63,35 +64,35 @@ export default function Performance({ route }) {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  function addHistoric(value, id) {
-    if (value === "" || id === "") {
-      alert("Campo com informação ausente");
-    } else {
-      const performanceRef = ref(
-        db,
-        "concursos/" +
-          user.uid +
-          "/" +
-          concursoSelected +
-          "/subjects/" +
-          subjectKey +
-          "/performance"
-      );
-      let perfKey = push(performanceRef);
-      set(perfKey, {
-        value: value,
-        id: id,
-      }).then(() => {
-        setHistoric([
-          ...historic,
-          {
-            key: value,
-            value: value,
-            id: id,
-          },
-        ]);
-      });
-    }
+  function addHistoric(value, total, id) {
+    let proportion = (value * 100) / total;
+    const performanceRef = ref(
+      db,
+      "concursos/" +
+        user.uid +
+        "/" +
+        concursoSelected +
+        "/subjects/" +
+        subjectKey +
+        "/performance"
+    );
+    let perfKey = push(performanceRef);
+    set(perfKey, {
+      value: value,
+      total: total,
+      id: id,
+    }).then(() => {
+      setHistoric([
+        ...historic,
+        {
+          key: value,
+          value: value,
+          total: total,
+          id: id,
+        },
+      ]);
+    });
+
     setModalVisible(false);
   }
 
@@ -128,7 +129,10 @@ export default function Performance({ route }) {
   }
 
   let xAxios = historic.map((item) => item.id);
-  let yAxios = historic.map((item) => item.value);
+  let yAxios = historic.map((item) => {
+    let value = (item.value * 100) / item.total;
+    return value;
+  });
 
   return (
     <Container>
@@ -137,10 +141,7 @@ export default function Performance({ route }) {
       </Modal>
       <Header goBack={true} concursoSelected={route.params.concursoSelected} />
       <TitleWrapper>
-        <Text
-          onPress={() => deleteHistoricItem("-N-ZmBJTkK_UKXrd5Lil")}
-          style={{ color: "#3865A8", fontSize: 20 }}
-        >
+        <Text style={{ color: "#3865A8", fontSize: 20 }}>
           {subjectData.name}
         </Text>
         <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -166,7 +167,9 @@ export default function Performance({ route }) {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ color: "#fff" }}>{item.id}</Text>
-              <Text style={{ color: "#fff" }}>{item.value}</Text>
+              <Text style={{ color: "#fff" }}>
+                {item.value}/{item.total}
+              </Text>
             </TouchableOpacity>
           )}
         />
@@ -195,7 +198,7 @@ export default function Performance({ route }) {
             [...new Set(yAxios)].length > 5 ? 5 : [...new Set(yAxios)].length
           }
           chartConfig={{
-            backgroundColor: "#8DB8F8",
+            backgroundColor: "#fff",
             backgroundGradientFrom: "#8DB8F8",
             backgroundGradientTo: "#8DB8F8",
             decimalPlaces: 0, // optional, defaults to 2dp

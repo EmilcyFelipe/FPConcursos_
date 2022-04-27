@@ -15,7 +15,13 @@ export default function ProfileRoutes() {
       />
       <Stack.Screen
         name="EditProfile"
-        options={{ headerTintColor: "#fff", title: "Editar Perfil" }}
+        options={{
+          headerTintColor: "#fff",
+          headerStyle: {
+            backgroundColor: "#121212",
+          },
+          title: "Editar Perfil",
+        }}
         component={EditProfile}
       />
     </Stack.Navigator>

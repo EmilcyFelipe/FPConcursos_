@@ -40,7 +40,7 @@ import {
   ModalButton,
 } from "./styles";
 
-export default function Timeline({ route }) {
+export default function Timeline() {
   const [stepName, setStepName] = useState("");
   const [initialDate, setInitialDate] = useState("");
   const [finalDate, setFinalDate] = useState("");
@@ -215,12 +215,9 @@ export default function Timeline({ route }) {
     alert("Para editar ou deletar uma etapa, mantenha pressionado o elemento");
   }
 
-  useEffect(() => {
-    console.log(Date.parse(new Date()));
-  }, []);
   return (
     <Container>
-      <Header goBack={true} concursoSelected={route.params.concursoSelected} />
+      <Header goBack={true} concursoSelected={concursoSelected} />
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -354,16 +351,17 @@ export default function Timeline({ route }) {
         style={{ marginLeft: "auto", marginRight: "5%", marginTop: 20 }}
         onPress={help}
       >
-        <FontAwesome name="question-circle" size={24} color="black" />
+        <FontAwesome name="question-circle" size={24} color="#fff" />
       </TouchableOpacity>
       <TitleWrapper>
-        <Text style={{ color: "#3865A8", fontSize: 20 }}>Cronograma</Text>
+        <Text style={{ color: "#3865A8", fontSize: 24 }}>Cronograma</Text>
         <TouchableOpacity
           onPress={() => {
             handleAddStep();
           }}
+          style={{ marginBottom: 0 }}
         >
-          <Text style={{ color: "#FFF", fontSize: 20 }}>Adicionar Etapa</Text>
+          <Text style={{ color: "#FFF", fontSize: 18 }}>Adicionar Etapa</Text>
         </TouchableOpacity>
       </TitleWrapper>
       <ScrollView

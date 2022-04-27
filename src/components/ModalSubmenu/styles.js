@@ -17,6 +17,7 @@ export const ModalHeader = styled.Text`
 export const InputSubmenu = styled.TextInput.attrs({
   placeholderTextColor: "#505050",
 })`
+  color: #fff;
   background-color: #121212;
   border-radius: 10px;
   height: 40px;

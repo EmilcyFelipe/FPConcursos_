@@ -15,4 +15,5 @@ export const List = styled.FlatList`
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  height: 200px;
 `;

@@ -25,10 +25,6 @@ export default function Header({ goBack }) {
         setConcursoCargo("Selecione um concurso");
         setConcursoSigla("");
       }
-
-      {
-        onlyOnce: true;
-      }
     });
   }, [concursoSelected]);
 

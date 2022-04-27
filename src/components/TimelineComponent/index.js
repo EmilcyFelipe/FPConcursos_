@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
+
+import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import { HomeContext } from "../../contexts/home";
@@ -14,6 +10,8 @@ import { Container, TimeLineWrapper, StepBox } from "./styles";
 export default function TimelineComponent() {
   const { timelineSteps, loadingSteps } = useContext(HomeContext);
   const activity = useRef();
+
+  const navigation = useNavigation();
 
   if (loadingSteps) {
     return (
@@ -30,9 +28,16 @@ export default function TimelineComponent() {
   }
 
   function stepColor(step) {
-    let currentDate = Date.parse(new Date());
-    console.log(currentDate);
-    if (step.initialDate < currentDate) {
+    let dateOfDay = new Date();
+    let currentDate = Date.parse(
+      dateOfDay.getFullYear() +
+        "-" +
+        "0" +
+        (dateOfDay.getMonth() + 1) +
+        "-" +
+        dateOfDay.getDate()
+    );
+    if (step.initialDate <= currentDate) {
       if (step.finalDate < currentDate) {
         return "#FFF";
       } else {
@@ -52,9 +57,14 @@ export default function TimelineComponent() {
             justifyContent: "center",
           }}
         >
-          <Text style={{ fontSize: 20 }}>
-            Sem cronograma, adicione algumas etapas
-          </Text>
+          <TouchableOpacity
+            style={{ width: "100%", backgroundColor: "#121212", padding: 20 }}
+            onPress={() => navigation.navigate("Timeline")}
+          >
+            <Text style={{ fontSize: 18, color: "#fff" }}>
+              Adicione seu cronograma
+            </Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <TimeLineWrapper

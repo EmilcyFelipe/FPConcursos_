@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Switch } from "react-native";
 
 import { Container, InputWrapper, InputElement, ActionEdit } from "./styles";
 
@@ -16,34 +16,51 @@ export default function EditProfile() {
   const db = getDatabase(app);
 
   const [name, setName] = useState(user.name);
-  const [email, setEmail] = useState(user.email);
+  const [genrer, setGenrer] = useState(user.genrer === "F" ? true : false);
 
   let userRef = ref(db, "users/" + user.uid);
 
   function updateProfile() {
+    let genrerString = genrer ? "F" : "M";
     if (name) {
-      if (name != user.name) {
+      if (name != user.name || genrerString != user.genrer) {
         setUser((oldValue) => {
-          return { ...oldValue, name: name };
+          return { ...oldValue, name: name, genrer: genrer ? "F" : "M" };
         });
-        update(userRef, { name: name });
+        update(userRef, { name: name, genrer: genrer ? "F" : "M" });
         navigation.goBack();
       }
     }
   }
+  useEffect(() => {
+    console.log(user.genrer);
+  }, [user]);
 
   return (
     <Container>
       <InputWrapper>
-        <Text>Nome</Text>
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>Nome</Text>
         <InputElement
           value={name}
           onChangeText={(text) => setName(text)}
           placeholder="Nome"
         />
+        <Text style={{ color: "#fff", fontWeight: "bold", marginTop: 20 }}>
+          Genrer
+        </Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>M</Text>
+          <Switch
+            value={genrer}
+            onValueChange={(value) => {
+              setGenrer(value);
+            }}
+          />
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>F</Text>
+        </View>
       </InputWrapper>
       <ActionEdit onPress={updateProfile}>
-        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+        <Text style={{ fontWeight: "bold", fontSize: 16, color: "#fff" }}>
           Confirmar Edição
         </Text>
       </ActionEdit>

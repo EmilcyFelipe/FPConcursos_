@@ -28,9 +28,6 @@ export default function Home() {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log(concursoSelected + "oa");
-  }, []);
   if (!concursoSelected) {
     return (
       <Container>
@@ -77,9 +74,7 @@ export default function Home() {
         <ActionRow>
           <ActionItem
             onPress={() => {
-              navigation.navigate("Timeline", {
-                concursoSelected: concursoSelected,
-              });
+              navigation.navigate("Timeline");
             }}
           >
             <TimelineIcon width={80} height={80} />

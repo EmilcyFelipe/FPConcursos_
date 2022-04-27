@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import Header from "../../components/Header";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+
+import { AntDesign } from "@expo/vector-icons";
 
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../contexts/auth";
 import app from "../../services/firebaseConnection";
 import { getDatabase, onValue, ref } from "firebase/database";
+
+import { MaterialIcons } from "@expo/vector-icons";
 
 import {
   Container,
@@ -66,15 +70,34 @@ export default function PerformanceBasis({ route }) {
     >
       <Text style={{ color: "#FFF", fontSize: 20 }}>{item.name}</Text>
       <Text style={{ color: "#FF8A00", fontSize: 20 }}>{item.performance}</Text>
+      <MaterialIcons name="chevron-right" size={28} color="#fff" />
     </SyntheticPerformance>
   ));
+
+  function helpPerformanceBasis() {
+    alert(
+      "Aqui é representada a média do desempenho nos simulados por matéria, é recomendado não deixar valores muito antigos no desempenho histórico para o estudante ter a real noção do seu desempenho sintético"
+    );
+  }
+
   return (
     <Container>
       <Header goBack={true} concursoSelected={concursoSelected} />
+      {subjectList == [] && (
+        <View>
+          <Text>Primeiro adicione algum conteúdo</Text>
+        </View>
+      )}
       <TitleWrapper>
-        <Text style={{ color: "#3865a8", fontSize: 25, marginTop: 20 }}>
+        <Text style={{ color: "#3865a8", fontSize: 25 }}>
           Desempenho Sintético
         </Text>
+        <TouchableOpacity
+          onPress={helpPerformanceBasis}
+          style={{ marginLeft: "auto", marginRight: 0 }}
+        >
+          <AntDesign name="questioncircle" size={24} color="#fff" />
+        </TouchableOpacity>
       </TitleWrapper>
       <ListWrapper>{syntheticList}</ListWrapper>
     </Container>

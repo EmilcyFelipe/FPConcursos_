@@ -9,10 +9,10 @@ export default function Overview() {
       <View style={{ width: "90%" }}>
         <Text style={{ color: "#fff" }}>
           No momento, esta funcionalidade ainda está em desenvolvimento. Em
-          breve estará disponível
+          breve, vamos trazer mais novidades 😜
         </Text>
       </View>
-      <Building height={200} />
+      <Building style={{ marginTop: 20 }} height={200} />
     </Container>
   );
 }

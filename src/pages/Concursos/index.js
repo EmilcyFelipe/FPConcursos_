@@ -15,6 +15,7 @@ import ContentsIcon from "../../assets/contents.svg";
 
 export default function Concursos() {
   const [items, setItems] = useState("");
+  const [loadingItems, setLoadingItems] = useState(true);
 
   const { user } = useContext(AuthContext);
   const uid = user.uid;
@@ -33,6 +34,7 @@ export default function Concursos() {
           cargo: childItem.val().cargo,
         };
         setItems((oldArray) => [...oldArray, list]);
+        setLoadingItems(false);
       });
     });
   }, []);
@@ -56,7 +58,7 @@ export default function Concursos() {
         </Text>
         <Ionicons name="add-circle-outline" size={24} color="#fff" />
       </ActionToRegister>
-      {items === "" ? (
+      {loadingItems === "" ? (
         <ActivityIndicator color="#FFF" size="large" />
       ) : (
         <List

@@ -40,7 +40,7 @@ export default function SignUp() {
         </Text>
         <LogoWrapper>
           <SignupImg
-            width={Dimensions.get("window").width * 0.8}
+            width={Dimensions.get("window").width * 0.5}
             height={300}
             fill={"red"}
           />
@@ -69,6 +69,7 @@ export default function SignUp() {
               setPassword(text);
             }}
           />
+          <Text style={{ color: "#fff" }}>Gênero</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ color: "#fff" }}>M</Text>
             <Switch

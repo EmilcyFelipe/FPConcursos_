@@ -9,7 +9,6 @@ import { Container, TimeLineWrapper, StepBox } from "./styles";
 
 export default function TimelineComponent() {
   const { timelineSteps, loadingSteps } = useContext(HomeContext);
-  const activity = useRef();
 
   const navigation = useNavigation();
 
@@ -50,7 +49,7 @@ export default function TimelineComponent() {
 
   return (
     <Container>
-      {!timelineSteps ? (
+      {Object.keys(timelineSteps).length === 0 ? (
         <View
           style={{
             height: 100,
@@ -68,7 +67,6 @@ export default function TimelineComponent() {
         </View>
       ) : (
         <TimeLineWrapper
-          ref={activity}
           horizontal={true}
           data={timelineSteps}
           showsHorizontalScrollIndicator={false}

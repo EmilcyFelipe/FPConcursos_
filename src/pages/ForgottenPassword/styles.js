@@ -2,9 +2,13 @@ import styled from "styled-components";
 
 export const Container = styled.View`
   align-items: center;
+  background-color: #1c1c1c;
+  flex: 1;
 `;
 
-export const EmailInput = styled.TextInput`
+export const EmailInput = styled.TextInput.attrs({
+  placeholderTextColor: "#fff",
+})`
   background-color: #121212;
   margin-top: 20px;
   width: 90%;

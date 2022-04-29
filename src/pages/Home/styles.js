@@ -22,17 +22,14 @@ export const ActionRow = styled.View`
   width: 100%;
   flex-direction: row;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top: 30px;
 `;
 
 export const ActionItem = styled.TouchableOpacity`
-  height: 140px;
-  width: 140px;
   background-color: #1c1c1c;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
-  padding: 10px;
 `;
 
 export const ActionText = styled.Text`

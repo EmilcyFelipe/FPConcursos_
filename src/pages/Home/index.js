@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 
 import {
   Container,
@@ -21,12 +21,14 @@ import { useNavigation } from "@react-navigation/native";
 import TimelineIcon from "../../assets/timeline.svg";
 import ConteudoIcon from "../../assets/subject.svg";
 import PerformanceIcon from "../../assets/performance.svg";
+import Overview from "../../assets/overview.svg";
 import Pick from "../../assets/pick.svg";
 
 export default function Home() {
   const { user, concursoSelected } = useContext(AuthContext);
 
   const navigation = useNavigation();
+  let buttonDimension = Dimensions.get("window").width * 0.35;
 
   if (!concursoSelected) {
     return (
@@ -76,6 +78,10 @@ export default function Home() {
             onPress={() => {
               navigation.navigate("Timeline");
             }}
+            style={{
+              width: buttonDimension,
+              height: buttonDimension,
+            }}
           >
             <TimelineIcon width={80} height={80} />
             <ActionText>Cronograma</ActionText>
@@ -86,24 +92,38 @@ export default function Home() {
                 concursoSelected: concursoSelected,
               });
             }}
+            style={{
+              width: buttonDimension,
+              height: buttonDimension,
+            }}
           >
             <ConteudoIcon width={80} height={80} />
             <ActionText>Conteúdo</ActionText>
           </ActionItem>
         </ActionRow>
-        <ActionRow>
+        <ActionRow style={{}}>
           <ActionItem
             onPress={() => {
               navigation.navigate("Performance", {
                 concursoSelected: concursoSelected,
               });
             }}
+            style={{
+              width: buttonDimension,
+              height: buttonDimension,
+            }}
           >
             <PerformanceIcon width={80} height={80} />
             <ActionText>Desempenho</ActionText>
           </ActionItem>
-          <ActionItem>
-            <TimelineIcon width={80} height={80} />
+          <ActionItem
+            onPress={() => navigation.navigate("Overview")}
+            style={{
+              width: buttonDimension,
+              height: buttonDimension,
+            }}
+          >
+            <Overview width={80} height={80} />
             <ActionText>Visão Geral</ActionText>
           </ActionItem>
         </ActionRow>

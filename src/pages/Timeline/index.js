@@ -329,14 +329,17 @@ export default function Timeline() {
                 >
                   <Text style={{ color: "#FFF" }}>Cancelar</Text>
                 </ModalButton>
-                <ModalButton onPress={editing ? editStep : addStep}>
+                <ModalButton
+                  onPress={editing ? editStep : addStep}
+                  style={{ backgroundColor: "#22540B" }}
+                >
                   <Text style={{ color: "#FFF" }}>
                     {editing ? "Editar" : "Adicionar"}
                   </Text>
                 </ModalButton>
                 {editing && (
                   <ModalButton
-                    style={{ backgroundColor: "#AC3F3F" }}
+                    style={{ backgroundColor: "#3865A8" }}
                     onPress={deleteStep}
                   >
                     <Text style={{ color: "#FFF" }}>Excluir</Text>

@@ -17,6 +17,7 @@ export const AuthContext = createContext({});
 function AuthProvider({ children }) {
   const [user, setUser] = useState("");
   const [concursoSelected, setConcursoSelected] = useState();
+  const [wrongAuth, setWrongAuth] = useState(false);
 
   useEffect(async () => {
     if (user) {
@@ -60,6 +61,7 @@ function AuthProvider({ children }) {
   }, []);
 
   function signIn(email, password) {
+    setWrongAuth(false);
     signInWithEmailAndPassword(auth, email, password)
       .then((value) => {
         let uid = value.user.uid;
@@ -80,7 +82,10 @@ function AuthProvider({ children }) {
         );
       })
       .catch((error) => {
-        alert(error.message + "2");
+        if (error.code === "auth/wrong-password") {
+          setWrongAuth(true);
+        }
+        alert(error.message);
       });
   }
 
@@ -106,7 +111,7 @@ function AuthProvider({ children }) {
             storageUser(data);
           })
           .catch((error) => {
-            alert(error.message + "3");
+            alert(error.message);
           });
       })
       .catch((error) => {
@@ -123,7 +128,7 @@ function AuthProvider({ children }) {
         alert("usuário deslogado");
       })
       .catch((error) => {
-        alert(error.message + "4");
+        alert(error.message);
       });
   }
 
@@ -131,7 +136,7 @@ function AuthProvider({ children }) {
     try {
       await AsyncStorage.setItem("Auth_user", JSON.stringify(data));
     } catch (error) {
-      alert(error.message + "5");
+      alert(error.message);
     }
   }
 
@@ -146,7 +151,7 @@ function AuthProvider({ children }) {
         await AsyncStorage.setItem("@concurso_Selected", JSON.stringify(data));
       }
     } catch (error) {
-      alert(error.message + "6");
+      alert(error.message);
     }
   }
 
@@ -161,6 +166,8 @@ function AuthProvider({ children }) {
         storageConcursoSelected,
         signIn,
         logOut,
+        wrongAuth,
+        setWrongAuth,
         concursoSelected,
         setConcursoSelected,
       }}

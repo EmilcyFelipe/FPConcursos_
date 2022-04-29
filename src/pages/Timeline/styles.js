@@ -8,6 +8,7 @@ export const Container = styled.View`
 
 export const TitleWrapper = styled.View`
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   width: 90%;
   margin-top: 20px;

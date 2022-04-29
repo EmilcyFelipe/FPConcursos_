@@ -5,8 +5,8 @@ import { Container, HeaderText, EmailInput, ActionReset } from "./styles";
 import app from "../../services/firebaseConnection";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
-export default function ForgottenPassword() {
-  const [emailValue, setEmailValue] = useState("");
+export default function ForgottenPassword({ route }) {
+  const [emailValue, setEmailValue] = useState(route.params.email);
 
   const auth = getAuth(app);
 
@@ -17,7 +17,7 @@ export default function ForgottenPassword() {
     }
     sendPasswordResetEmail(auth, emailValue)
       .then(() => {
-        alert(`Email de recuperação enviado para ${emailValue}`);
+        alert(`E-mail de recuperação enviado para ${emailValue}`);
         setEmailValue("");
       })
       .catch((err) => {
@@ -27,7 +27,7 @@ export default function ForgottenPassword() {
   return (
     <Container>
       <EmailInput
-        placeholder="Email"
+        placeholder="E-mail"
         autoCapitalize="none"
         value={emailValue}
         onChangeText={(text) => {
@@ -35,7 +35,9 @@ export default function ForgottenPassword() {
         }}
       />
       <ActionReset onPress={sendEmailToReset}>
-        <Text style={{ fontWeight: "bold" }}>Enviar email de recuperação</Text>
+        <Text style={{ fontWeight: "bold", color: "#fff" }}>
+          Solicitar e-mail de recuperação
+        </Text>
       </ActionReset>
     </Container>
   );

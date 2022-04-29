@@ -26,7 +26,7 @@ import Logo from "../../assets/research.svg";
 export default function SignIn() {
   const navigation = useNavigation();
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, setWrongAuth, wrongAuth } = useContext(AuthContext);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -54,7 +54,7 @@ export default function SignIn() {
             onChangeText={(text) => setEmail(text)}
           />
           <Input
-            placeholder="Password"
+            placeholder="Senha"
             value={password}
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
@@ -62,6 +62,11 @@ export default function SignIn() {
           <Submit onPress={() => signIn(email, password)}>
             <SubmitText>Entrar</SubmitText>
           </Submit>
+          {wrongAuth && (
+            <Text style={{ color: "red", fontSize: 12 }}>
+              Email ou senha incorretos
+            </Text>
+          )}
         </InputWrapper>
         <Link
           onPress={() => {
@@ -70,7 +75,9 @@ export default function SignIn() {
         >
           <LinkText>Criar uma conta</LinkText>
         </Link>
-        <Link onPress={() => navigation.navigate("ForgottenPass")}>
+        <Link
+          onPress={() => navigation.navigate("ForgottenPass", { email: email })}
+        >
           <LinkText>Esqueci minha senha</LinkText>
         </Link>
       </Container>

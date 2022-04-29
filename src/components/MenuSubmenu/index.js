@@ -125,7 +125,12 @@ export default function MenuSubmenu({
         onPress={() => setShowSubs(!showSubs)}
         onLongPress={handleDeleteSubject}
       >
-        <Text style={{ color: "#FFF", fontSize: 20 }}>{data.name}</Text>
+        <Text
+          numberOfLines={1}
+          style={{ color: "#FFF", fontSize: 20, width: "80%" }}
+        >
+          {data.name}
+        </Text>
         <MaterialIcons
           name={showSubs ? "expand-less" : "expand-more"}
           size={24}

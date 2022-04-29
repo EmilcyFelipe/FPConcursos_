@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import DataHome from "../pages/DataHome";
 import Timeline from "../pages/Timeline";
 import Subjects from "../pages/Subjects";
+import Overview from "../pages/Overview";
 
 import PerformanceRoutes from "./performance.routes";
 
@@ -30,6 +31,15 @@ export default function HomeRoutes() {
         name="Performance"
         options={{ headerShown: false }}
         component={PerformanceRoutes}
+      />
+      <HomeStack.Screen
+        name="Overview"
+        options={{
+          headerTintColor: "#fff",
+          headerStyle: { backgroundColor: "#121212" },
+          headerTitle: "Visão Geral",
+        }}
+        component={Overview}
       />
     </HomeStack.Navigator>
   );

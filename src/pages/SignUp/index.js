@@ -62,7 +62,7 @@ export default function SignUp() {
             }}
           />
           <Input
-            placeholder="Password"
+            placeholder="Senha"
             secureTextEntry={true}
             value={password}
             onChangeText={(text) => {

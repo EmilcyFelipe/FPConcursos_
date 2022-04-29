@@ -19,7 +19,7 @@ export const UserInformations = styled.View``;
 export const EditButton = styled.TouchableOpacity`
   width: 90%;
   padding: 10px;
-  background-color: #3865a8;
+  background-color: #22540b;
   justify-content: center;
   align-items: center;
   border-radius: 10px;

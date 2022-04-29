@@ -27,7 +27,7 @@ export default function ModalSubmenu({
   }
   return (
     <Container>
-      <ModalHeader>Adicione um conteúdo</ModalHeader>
+      <ModalHeader>Adicione um conteúdo analítico</ModalHeader>
       <InputSubmenu
         value={contentValue}
         onChangeText={(value) => {

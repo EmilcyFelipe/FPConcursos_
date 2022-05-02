@@ -15,7 +15,7 @@ export default function PerformanceRoutes({ route }) {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="Performance"
+        name="PerformanceHistoric"
         component={Performance}
         options={{ headerShown: false }}
       />

@@ -61,7 +61,7 @@ export default function PerformanceBasis({ route }) {
   let syntheticList = subjectList.map((item) => (
     <SyntheticPerformance
       onPress={() => {
-        navigation.navigate("Performance", {
+        navigation.navigate("PerformanceHistoric", {
           concursoSelected: concursoSelected,
           subjectKey: item.key,
         });

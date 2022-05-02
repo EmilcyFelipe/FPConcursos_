@@ -43,7 +43,7 @@ export default function Profile() {
       )}
       <UserInformations>
         <Text style={{ color: "#fff" }}>Nome: {user.name}</Text>
-        <Text style={{ color: "#fff" }}>Email: {user.email}</Text>
+        <Text style={{ color: "#fff" }}>E-mail: {user.email}</Text>
         <Text style={{ color: "#fff" }}>
           Gênero: {user.genrer === "M" ? "Masculino" : "Feminino"}
         </Text>

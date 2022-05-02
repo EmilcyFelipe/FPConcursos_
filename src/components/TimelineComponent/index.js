@@ -30,14 +30,34 @@ export default function TimelineComponent() {
     let dateOfDay = new Date();
     let currentDate = Date.parse(
       dateOfDay.getFullYear() +
-        "-" +
-        "0" +
-        (dateOfDay.getMonth() + 1) +
-        "-" +
-        dateOfDay.getDate()
+        "/" +
+        (dateOfDay.getMonth() < 10
+          ? "0" + (dateOfDay.getMonth() + 1)
+          : dateOfDay.getMonth()) +
+        "/" +
+        (dateOfDay.getDate() < 10
+          ? "0" + dateOfDay.getDate()
+          : dateOfDay.getDate())
     );
-    if (step.initialDate <= currentDate) {
-      if (step.finalDate < currentDate) {
+
+    let initialDateMili = Date.parse(
+      step.initialDate.slice(6) +
+        "/" +
+        step.initialDate.slice(3, 5) +
+        "/" +
+        step.initialDate.slice(0, 2)
+    );
+
+    let finalDateMili = Date.parse(
+      step.finalDate.slice(6) +
+        "/" +
+        step.finalDate.slice(3, 5) +
+        "/" +
+        step.finalDate.slice(0, 2)
+    );
+
+    if (initialDateMili <= currentDate) {
+      if (finalDateMili < currentDate) {
         return "#505050";
       } else {
         return "#FF5C00";
@@ -79,10 +99,10 @@ export default function TimelineComponent() {
               />
               <Text style={{ color: "#ffff" }}>{item.etapa}</Text>
               <Text style={{ color: "#ffff", fontSize: 12 }}>
-                {formatDate(new Date(item.initialDate))}
+                {item.initialDate}
               </Text>
               <Text style={{ color: "#ffff", fontSize: 12 }}>
-                {formatDate(new Date(item.finalDate))}
+                {item.finalDate}
               </Text>
             </StepBox>
           )}

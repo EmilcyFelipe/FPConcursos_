@@ -59,14 +59,14 @@ export default function Timeline() {
 
   function formatDate(date) {
     return (
-      date.getFullYear() +
+      (date.getDate() < 9 ? "0" + (date.getDate() + 1) : date.getDate() + 1) +
       "-" +
-      0 +
-      (date.getMonth() + 1) +
+      (date.getMonth() < 9 ? "0" + date.getMonth() : date.getMonth()) +
       "-" +
-      (date.getDate() + 1)
+      date.getFullYear()
     );
   }
+
   useEffect(() => {
     async function loadList() {
       onValue(timelineRef, (snapshot) => {
@@ -75,8 +75,8 @@ export default function Timeline() {
           let timeItem = {
             key: childItem.key,
             etapa: childItem.val().etapa,
-            initialDate: formatDate(new Date(childItem.val().initialDate)),
-            finalDate: formatDate(new Date(childItem.val().finalDate)),
+            initialDate: childItem.val().initialDate,
+            finalDate: childItem.val().finalDate,
           };
           setItems((oldArray) => [...oldArray, timeItem]);
         });
@@ -118,8 +118,8 @@ export default function Timeline() {
         stepRef,
         (snapshot) => {
           setStepName(snapshot.val().etapa);
-          setInitialDate(formatDate(new Date(snapshot.val().initialDate)));
-          setFinalDate(formatDate(new Date(snapshot.val().finalDate)));
+          setInitialDate(snapshot.val().initialDate);
+          setFinalDate(snapshot.val().finalDate);
         },
         { onlyOnce: true }
       );
@@ -139,8 +139,8 @@ export default function Timeline() {
     const stepKey = push(timelineRef);
     set(stepKey, {
       etapa: stepName,
-      initialDate: Date.parse(initialDate),
-      finalDate: Date.parse(finalDate),
+      initialDate: initialDate,
+      finalDate: finalDate,
     })
       .then(() => {
         setStepName("");
@@ -165,8 +165,8 @@ export default function Timeline() {
     );
     update(stepRef, {
       etapa: stepName,
-      initialDate: Date.parse(initialDate),
-      finalDate: Date.parse(finalDate),
+      initialDate: initialDate,
+      finalDate: finalDate,
     })
       .then(() => {
         setStepName("");
@@ -255,9 +255,9 @@ export default function Timeline() {
                 date={initialDate}
                 mode="date"
                 placeholder="Data Inicial"
-                format="YYYY-MM-DD"
-                minDate="2010-05-01"
-                maxDate="2030-05-01"
+                format="DD/MM/YYYY"
+                minDate="01/05/2000"
+                maxDate="01/05/2035"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -290,9 +290,9 @@ export default function Timeline() {
                 date={finalDate}
                 mode="date"
                 placeholder="Data Final"
-                format="YYYY-MM-DD"
-                minDate="2010-05-01"
-                maxDate="2030-05-01"
+                format="DD/MM/YYYY"
+                minDate="01/05/2000"
+                maxDate="01/05/2035"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{

@@ -27,6 +27,8 @@ import app from "../../services/firebaseConnection";
 import { LineChart } from "react-native-chart-kit";
 import { FlatList } from "react-native-gesture-handler";
 
+import { AntDesign } from "@expo/vector-icons";
+
 export default function Performance({ route }) {
   const [concursoSelected, setConcursoSelected] = useState(
     route.params.concursoSelected
@@ -128,6 +130,12 @@ export default function Performance({ route }) {
     remove(historicItemRef);
   }
 
+  function help() {
+    alert(
+      "A representação gráfica é referente a quantidade de acertos em relação a 100 unidades de questões. Dessa forma, os dados inseridos são convertidos para essa proporção de x acertos para cada 100 questões"
+    );
+  }
+
   let xAxios = historic.map((item) => item.id);
   let yAxios = historic.map((item) => {
     let value = (item.value * 100) / item.total;
@@ -140,6 +148,12 @@ export default function Performance({ route }) {
         <ModalHistoric shows={setModalVisible} addHistoric={addHistoric} />
       </Modal>
       <Header goBack={true} concursoSelected={route.params.concursoSelected} />
+      <TouchableOpacity
+        onPress={help}
+        style={{ marginLeft: "auto", marginRight: "5%", marginTop: 10 }}
+      >
+        <AntDesign name="questioncircle" size={24} color="#fff" />
+      </TouchableOpacity>
       <TitleWrapper>
         <Text style={{ color: "#3865A8", fontSize: 20 }}>
           {subjectData.name}

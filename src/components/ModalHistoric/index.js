@@ -10,8 +10,6 @@ import {
   CancelButton,
 } from "./styles";
 
-import { AntDesign } from "@expo/vector-icons";
-
 export default function ModalHistoric({ shows, addHistoric }) {
   const [successValue, setSuccessValue] = useState("");
   const [totalValue, setTotalValue] = useState("");
@@ -33,23 +31,12 @@ export default function ModalHistoric({ shows, addHistoric }) {
     setSequence("");
   }
 
-  function help() {
-    alert(
-      "A representação gráfica é referente a quantidade de acertos em relação a 100 unidades de questões. Dessa forma, os dados inseridos são convertidos para essa proporção de x acertos para cada 100 questões"
-    );
-  }
   return (
     <Container>
       <View>
         <Text style={{ color: "white", fontSize: 20 }}>
           Insira seu desempenho:
         </Text>
-        <TouchableOpacity
-          onPress={help}
-          style={{ marginLeft: "auto", marginRight: 0 }}
-        >
-          <AntDesign name="questioncircle" size={24} color="#fff" />
-        </TouchableOpacity>
       </View>
       <ValueInput
         value={successValue}
@@ -67,7 +54,7 @@ export default function ModalHistoric({ shows, addHistoric }) {
         value={sequence}
         onChangeText={(text) => setSequence(text)}
         placeholder="1ºSimul, 2ºSimul...."
-        maxLength={5}
+        maxLength={7}
       />
       <ActionView>
         <CancelButton onPress={cancelModalAction}>

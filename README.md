@@ -34,18 +34,19 @@ Os usuários serão capazes de:
    <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262130.jpg"/>
  <div/>
 
-### Links
+### Link
 
-- PlayStore: [Go to PlayStore](https://play.google.com/store/apps/details?id=com.fpsolutions.FPConcursos)
+- PlayStore: [Acesse a playstore](https://play.google.com/store/apps/details?id=com.fpsolutions.FPConcursos)
+- Youtube: [Veja no youtube](https://www.youtube.com/watch?v=z983YsnekRA&ab_channel=FPSolutions)
 
 ## Meu processo
-  Para esse projeto eu utilizei diversas ferramentas, o design foi construído no figma. 
-  Para o app em si: 
-  A ferramenta principal para o projeto foi o React-native;
-  Navegação eu utilizei a biblioteca do react-navigation
-  Utilizei o Async storage para perseverar os dados, sem necessidade do usuário logar toda vez, melhorando a experiência do usuário;
-  A estilização eu optei pelo styled-components, foi ideal para o projeto e personalização de cada elemento
-  Para suprir a necessidade de autenticação de usuário, gerenciamento do back end e afins, eu utilizei o Firebase v9, escolhi essa versão nova para aproveitar e aprender diretamente na documentação
+  - Para esse projeto eu utilizei diversas ferramentas, o design foi construído no figma. 
+  - Para o app em si: 
+  - A ferramenta principal para o projeto foi o React-native;
+  - Navegação foi utilizada a biblioteca do react-navigation;
+  - O Async storage foi utilizado perseverar os dados, sem necessidade do usuário logar a cada momento, melhorando a experiência do usuário;
+  - A estilização foi montada por styled-components, foi ideal para o projeto e personalização de cada elemento
+  - Para suprir a necessidade de autenticação de usuário, gerenciamento de banco de dados e afins, foi utilizado o Firebase v9, versão nova, escolhi para conhecer a nova documentação do firebase
   
 ### Construído com:
 

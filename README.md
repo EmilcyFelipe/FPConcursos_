@@ -49,12 +49,12 @@ Os usuários serão capazes de:
   
 ### Construído com:
 
-- [React Navigation]
-- [Firebase]
-- [Async Storage]
-- [React Native Date Picker]
-- [React](https://reactjs.org/) - JS library
+- [React Navigation](https://reactnavigation.org/) 
+- [Firebase](https://firebase.google.com/) 
+- [Async Storage](https://react-native-async-storage.github.io/async-storage/) 
+- [React Native Date Picker](https://github.com/henninghall/react-native-date-picker)
+- [React](https://reactjs.org/) 
 - [React Native](https://reactnative.dev/) 
-- [Styled Components](https://styled-components.com/) - For styles
+- [Styled Components](https://styled-components.com/)
 
 

@@ -1,38 +1,36 @@
 # FPConcursos_
 
-This is a personal project that i build to help students organize your materials 
+Este é um projeto pessoal, trata-se de um app focado no gerenciamento de informaçoes e recursos relevantes para estudantes de concurso público
 
-## Table of contents
+## Conteúdo
 
-- [Overview](#overview)
+- [Visão geral](#visão-geral)
   - [Screenshot](#screenshot)
   - [Links](#links)
-- [My process](#my-process)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Useful resources](#useful-resources)
+- [Meu processo](#meu-processo)
+  - [Construído com](#construído-com)
 
 
 
-## Overview
+## Visão Geral
 
-The project provides that users includes maters, timeline, performance of simulate.
+O app promove o gerenciamento de informações relacionadas aos concursos e centralizar esse material em um único local.
 
-### The challenge
+Os usuários serão capazes de:
 
-Users should be able to:
-
-- View the optimal layout for the app depending on their device's screen size
-- See hover states for all interactive elements on the page
-- Create, Read, Update, and Delete informations
+- Adicionar e gerenciar Concurso
+- Adicionar e gerenciar Cronograma
+- Adicionar e gerenciar Conteúdo
+- Adicionar e mapear graficamente desempenho em simulados
+- E muito mais
 
 ### Screenshot
 <div style="flex-direction: row">
   <img width='200px' style="display: inline-block" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520261986.jpg"/>
   <img width='200px' style="display: inline-block" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262003.jpg"/>
-  <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262022.jpg"/>
   <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262039.jpg"/>
    <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262104.jpg"/>
+   <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262022.jpg"/>
    <img width='200px' style="display: inline" src="https://github.com/EmilcyFelipe/FPConcursos_/blob/master/screenshots/1651520262130.jpg"/>
  <div/>
 
@@ -40,11 +38,17 @@ Users should be able to:
 
 - PlayStore: [Go to PlayStore](https://play.google.com/store/apps/details?id=com.fpsolutions.FPConcursos)
 
-## My process
-  I start by designing on figma and after, by firebase tools, i need to add differents navigations, and how to propagate the data, this things are essential to built the app. 
-  i have issues 
+## Meu processo
+  Para esse projeto eu utilizei diversas ferramentas, o design foi construído no figma. 
+  Para o app em si: 
+  A ferramenta principal para o projeto foi o React-native;
+  Navegação eu utilizei a biblioteca do react-navigation
+  Utilizei o Async storage para perseverar os dados, sem necessidade do usuário logar toda vez, melhorando a experiência do usuário;
+  A estilização eu optei pelo styled-components, foi ideal para o projeto e personalização de cada elemento
+  Para suprir a necessidade de autenticação de usuário, gerenciamento do back end e afins, eu utilizei o Firebase v9, escolhi essa versão nova para aproveitar e aprender diretamente na documentação
+  
+### Construído com:
 
-### Built with
 - [React Navigation]
 - [Firebase]
 - [Async Storage]
@@ -54,6 +58,3 @@ Users should be able to:
 - [Styled Components](https://styled-components.com/) - For styles
 
 
-### What I learned
-
-I got known of firebase, improve navigation, useContext that i use to spread the data throw the app. I had to work with dates what is very challengging
